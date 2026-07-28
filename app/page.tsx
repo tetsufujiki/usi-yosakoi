@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SelectedWorks } from "@/components/SelectedWorks";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
+import { YosakoiHeroKinetics } from "@/components/YosakoiHeroKinetics";
 import { featuredWorks, yosakoiWorks } from "@/data/yosakoi-works";
 
 export const metadata: Metadata = {
@@ -72,6 +73,7 @@ export default function Home() {
       <main id="main-content">
         <section className="hero" aria-labelledby="hero-title">
           <div className="hero__phenomenon" aria-hidden="true">
+            <YosakoiHeroKinetics variant="hero" />
             <div className="hero__formation">
               <span />
               <span />
@@ -80,9 +82,6 @@ export default function Home() {
               <span />
               <span />
             </div>
-            <div className="hero__surge" />
-            <div className="hero__pulse hero__pulse--one" />
-            <div className="hero__pulse hero__pulse--two" />
           </div>
 
           <div className="hero__inner">
@@ -319,7 +318,7 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <SiteFooter />
+      <SiteFooter kineticsVariant="finale" />
     </>
   );
 }

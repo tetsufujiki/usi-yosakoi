@@ -1,8 +1,19 @@
 import Link from "next/link";
+import {
+  type KineticsVariant,
+  YosakoiHeroKinetics,
+} from "@/components/YosakoiHeroKinetics";
 
-export function SiteFooter() {
+type SiteFooterProps = {
+  kineticsVariant?: Extract<KineticsVariant, "finale">;
+};
+
+export function SiteFooter({ kineticsVariant }: SiteFooterProps) {
   return (
     <footer className="site-footer">
+      {kineticsVariant ? (
+        <YosakoiHeroKinetics variant={kineticsVariant} />
+      ) : null}
       <div className="site-footer__inner">
         <div>
           <p className="site-footer__eyebrow">YOSAKOI MUSIC</p>

@@ -410,11 +410,24 @@ button:disabled {
   position: absolute;
   inset: 0;
   z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.kinetics-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  contain: strict;
   pointer-events: none;
 }
 
 .hero__formation {
   position: absolute;
+  z-index: 1;
   right: -8%;
   bottom: 4%;
   width: min(64vw, 58rem);
@@ -471,37 +484,6 @@ button:disabled {
   animation-delay: 560ms;
 }
 
-.hero__surge {
-  position: absolute;
-  right: -12rem;
-  bottom: -15rem;
-  width: 38rem;
-  height: 38rem;
-  border: 9rem solid rgba(227, 95, 63, 0.09);
-  border-radius: 50%;
-  animation: surge-settle 1400ms cubic-bezier(0.2, 0.75, 0.2, 1) both;
-}
-
-.hero__pulse {
-  position: absolute;
-  border: 1px solid rgba(255, 248, 234, 0.18);
-  border-radius: 50%;
-}
-
-.hero__pulse--one {
-  top: 20%;
-  right: 10%;
-  width: 9rem;
-  height: 9rem;
-}
-
-.hero__pulse--two {
-  right: 39%;
-  bottom: 18%;
-  width: 4rem;
-  height: 4rem;
-}
-
 .hero__scroll {
   position: absolute;
   bottom: 1.7rem;
@@ -532,17 +514,6 @@ button:disabled {
   to {
     opacity: 0.72;
     transform: translateX(0);
-  }
-}
-
-@keyframes surge-settle {
-  from {
-    opacity: 0;
-    transform: scale(0.6);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
   }
 }
 
@@ -1242,6 +1213,9 @@ button:disabled {
 }
 
 .site-footer {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   padding: 5rem 20px 1.5rem;
   background: #0f1d1b;
   color: var(--color-cream);
@@ -1249,6 +1223,8 @@ button:disabled {
 
 .site-footer__inner,
 .site-footer__base {
+  position: relative;
+  z-index: 2;
   width: min(100%, 1240px);
   margin-inline: auto;
 }
