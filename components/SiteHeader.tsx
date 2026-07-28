@@ -1,0 +1,27 @@
+import Link from "next/link";
+
+export function SiteHeader() {
+  return (
+    <header className="site-header">
+      <div className="site-header__inner">
+        <Link className="site-identity" href="/" aria-label="Yosakoi Music トップ">
+          <span className="site-identity__mark" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </span>
+          <span>
+            <strong>YOSAKOI MUSIC</strong>
+            <small>UNITED STUDIO INC</small>
+          </span>
+        </Link>
+
+        <nav className="site-nav" aria-label="メインナビゲーション">
+          <Link href="/">楽曲制作</Link>
+          <Link href="/archive">作品アーカイブ</Link>
+          <a href="#inquiry">お問い合わせ</a>
+        </nav>
+      </div>
+    </header>
+  );
+}
