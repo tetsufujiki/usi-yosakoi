@@ -4,14 +4,18 @@ export function SiteHeader() {
   return (
     <header className="site-header">
       <div className="site-header__inner">
-        <Link className="site-identity" href="/" aria-label="Yosakoi Music トップ">
+        <Link
+          className="site-identity"
+          href="/"
+          aria-label="Yosakoi Sound Works トップ"
+        >
           <span className="site-identity__mark" aria-hidden="true">
             <i />
             <i />
             <i />
           </span>
           <span>
-            <strong>YOSAKOI MUSIC</strong>
+            <strong>YOSAKOI SOUND WORKS</strong>
             <small>UNITED STUDIO INC</small>
           </span>
         </Link>

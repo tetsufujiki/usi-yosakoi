@@ -17,33 +17,27 @@ export const metadata: Metadata = {
   },
 };
 
-const features = [
+const finishingProcesses = [
   {
-    number: "01",
-    title: "Theme Design",
-    copy: "チームのテーマや演舞構成をもとに、楽曲全体の流れを設計します。",
+    title: "Mixing",
+    copy: "楽曲を構成する一つひとつの音に向き合い、音量や音色、響き、奥行きを細かく調整します。それぞれの音が持つ力を引き出しながら、演舞を動かす一つの音楽へとまとめていきます。",
   },
   {
-    number: "02",
-    title: "Composition & Arrangement",
-    copy: "和の要素、現代的なサウンド、歌、掛け声を組み合わせ、一曲として構成します。",
-  },
-  {
-    number: "03",
-    title: "Recording",
-    copy: "歌、掛け声、楽器収録など、必要な音を制作内容に合わせて収録します。",
-  },
-  {
-    number: "04",
-    title: "Mix & Mastering",
-    copy: "演舞会場でも映えるよう、迫力と聴きやすさのバランスを整えます。",
+    title: "Mastering",
+    copy: "会場の広さや音響環境が異なる中でも、できるだけ踊り子に届き、演舞を支える音になるよう、全体の音圧や響きを整えます。地方車で使用する音源も、それぞれの再生環境を考慮しながら、この工程で仕上げます。",
   },
 ];
 
 const process = [
   ["ヒアリング", "テーマ、演舞構成、希望する方向性を確認します。"],
-  ["構成設計", "見せ場、展開、歌や掛け声の入り方を整理します。"],
-  ["作編曲", "チームの個性に合わせて楽曲を制作します。"],
+  [
+    "響きの探索",
+    "リズム、音色、フレーズを試しながら、曲が動き始めるきっかけを探します。",
+  ],
+  [
+    "作編曲",
+    "音の種を広げながら、チームの個性と演舞に合う楽曲へと仕上げていきます。",
+  ],
   ["収録", "歌、掛け声、楽器など必要な素材を録音します。"],
   ["仕上げ", "ミックス・マスタリングを行い、演舞用音源として完成させます。"],
 ];
@@ -87,20 +81,19 @@ export default function Home() {
           <div className="hero__inner">
             <div className="hero__copy">
               <p className="hero__eyebrow">
-                <span>YOSAKOI MUSIC</span>
+                <span>YOSAKOI SOUND WORKS</span>
                 <span>EST. 2008</span>
               </p>
               <h1 id="hero-title">
-                よさこい演舞の
-                <br />
-                テーマと熱量を、
-                <br />
-                <em>記憶に残る音楽へ。</em>
+                <span className="hero__title-line">チームの想いを、</span>
+                <span className="hero__title-line">その熱量を、</span>
+                <em className="hero__title-line hero__title-line--final">
+                  <span>記憶に残る</span>
+                  <span>音楽へ。</span>
+                </em>
               </h1>
-              <p className="hero__lead">
-                チームの物語、地域性、演舞構成に合わせて、
-                <br />
-                一曲の中に流れと見せ場を設計します。
+              <p className="hero__subcopy">
+                その一曲が、忘れられない景色を生む。
               </p>
               <div className="hero__actions">
                 <Link className="primary-link" href="/archive">
@@ -113,11 +106,17 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="hero__index" aria-hidden="true">
-              <span>FORMATION</span>
-              <span>FLOW</span>
-              <span>BURST</span>
-              <strong>音が、演舞を前へ進める。</strong>
+            <div className="hero__aside" aria-hidden="true">
+              <div className="hero__index">
+                <span>FORMATION</span>
+                <span>FLOW</span>
+                <span>BURST</span>
+              </div>
+              <p className="hero__poem">
+                <span>heat gathers,</span>
+                <span>a current turns,</span>
+                <span>and the scene opens</span>
+              </p>
             </div>
           </div>
 
@@ -132,9 +131,14 @@ export default function Home() {
             <div>
               <p className="section-label">ABOUT THE MUSIC</p>
               <h2 id="intro-title">
-                演舞のための一曲を、
-                <br />
-                チームごとに設計する。
+                <span className="intro__title-line">
+                  <span>演舞のための</span>
+                  <span>一曲を、</span>
+                </span>
+                <span className="intro__title-line">
+                  <span>チームごとに</span>
+                  <span>設計する。</span>
+                </span>
               </h2>
             </div>
             <div className="intro__body">
@@ -158,34 +162,9 @@ export default function Home() {
         </section>
 
         <section
-          className="features section section--ink"
-          aria-labelledby="features-title"
+          className="process section section--ink"
+          aria-labelledby="process-title"
         >
-          <div className="frame">
-            <div className="section-heading section-heading--split">
-              <div>
-                <p className="section-label">WHAT WE DESIGN</p>
-                <h2 id="features-title">制作の特徴</h2>
-              </div>
-              <p>
-                音色を足すだけではなく、演舞の始まりから余韻までをひとつの構成として考えます。
-              </p>
-            </div>
-
-            <div className="feature-grid">
-              {features.map((feature) => (
-                <article className="feature" key={feature.number}>
-                  <span>{feature.number}</span>
-                  <h3>{feature.title}</h3>
-                  <p>{feature.copy}</p>
-                  <i aria-hidden="true" />
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="process section" aria-labelledby="process-title">
           <div className="frame">
             <div className="section-heading">
               <p className="section-label">FROM DIALOGUE TO PERFORMANCE</p>
@@ -210,6 +189,43 @@ export default function Home() {
                 </li>
               ))}
             </ol>
+          </div>
+        </section>
+
+        <section
+          className="our-process section"
+          aria-labelledby="our-process-title"
+        >
+          <div className="frame">
+            <div className="our-process__intro">
+              <div>
+                <p className="section-label">OUR PROCESS</p>
+                <h2 id="our-process-title">
+                  <span>音が演舞を</span>
+                  <span>動かすまで</span>
+                </h2>
+              </div>
+              <div className="our-process__copy">
+                <p>
+                  チームとの対話から音の種を探し、楽曲として育て、最後の響きまで丁寧に仕上げる。音楽をつくるとは、作編曲だけではなく、音色の選択からミキシング、マスタリングに至るまで、すべての工程に向き合うことだと考えています。
+                </p>
+                <p>
+                  一つひとつの工程にどれだけこだわれるかが、演舞を動かす音の説得力を決めます。
+                </p>
+              </div>
+            </div>
+
+            <div className="finishing-process">
+              <h3>Mix &amp; Mastering</h3>
+              <div className="finishing-process__grid">
+                {finishingProcesses.map((item) => (
+                  <article className="finishing-process__item" key={item.title}>
+                    <h4>{item.title}</h4>
+                    <p>{item.copy}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
