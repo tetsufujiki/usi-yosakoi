@@ -800,6 +800,116 @@ button:disabled {
   line-height: 2;
 }
 
+/* Journey */
+.journey {
+  background:
+    radial-gradient(
+      circle at 92% 12%,
+      rgba(227, 95, 63, 0.13),
+      transparent 30rem
+    ),
+    linear-gradient(180deg, #ebe2d3 0%, #e5dac8 100%);
+}
+
+.journey__intro {
+  display: grid;
+  gap: clamp(3rem, 7vw, 6.5rem);
+}
+
+.journey__intro h2 {
+  max-width: 10em;
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(2.6rem, 7vw, 5.8rem);
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  line-height: 1.18;
+}
+
+.journey__intro h2 > span {
+  display: block;
+  white-space: nowrap;
+}
+
+.journey__meta {
+  margin: 2rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-line);
+  color: var(--color-ink-soft);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.journey__story {
+  max-width: 44rem;
+}
+
+.journey__story p {
+  margin: 0;
+  font-size: clamp(0.96rem, 1.3vw, 1.06rem);
+  line-height: 2.15;
+}
+
+.journey__story p + p {
+  margin-top: 1.65rem;
+}
+
+.journey__story .journey__lead {
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: clamp(1.25rem, 2.1vw, 1.65rem);
+  font-weight: 500;
+  letter-spacing: -0.018em;
+  line-height: 1.85;
+}
+
+.journey__story .journey__closing {
+  margin-top: clamp(2.75rem, 5vw, 4.5rem);
+  padding: 1.5rem 0 0 1.25rem;
+  border-top: 1px solid rgba(227, 95, 63, 0.42);
+  border-left: 3px solid var(--color-warm);
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: clamp(1.12rem, 1.8vw, 1.4rem);
+  font-weight: 500;
+  line-height: 1.95;
+}
+
+.journey__story .journey__footnote {
+  margin-top: 2.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-line);
+  color: var(--color-ink-soft);
+  font-size: 0.75rem;
+  line-height: 1.85;
+}
+
+.journey__works {
+  margin-top: clamp(4.5rem, 9vw, 8.5rem);
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-line);
+}
+
+.journey__works-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.journey__works-heading .section-label {
+  margin-bottom: 0;
+}
+
+.journey__works-heading > span {
+  color: var(--color-ink-soft);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
 /* Project-specific Work Cards */
 .selected-grid,
 .archive-grid {
@@ -867,11 +977,8 @@ button:disabled {
   border-bottom: 1px solid var(--color-line);
 }
 
-.selected-player__empty {
-  margin: 0;
-  padding: 2.7rem 0;
-  color: var(--color-ink-soft);
-  font-size: 0.8rem;
+.selected-player:empty {
+  display: none;
 }
 
 .selected-player__inner {
@@ -1880,6 +1987,11 @@ button:disabled {
 
   .finishing-process__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .journey__intro {
+    grid-template-columns: minmax(0, 0.78fr) minmax(25rem, 1.22fr);
+    align-items: start;
   }
 
   .finishing-process__item {

@@ -4,7 +4,7 @@ import { SelectedWorks } from "@/components/SelectedWorks";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { YosakoiHeroKinetics } from "@/components/YosakoiHeroKinetics";
-import { featuredWorks, yosakoiWorks } from "@/data/yosakoi-works";
+import { yosakoiWorks } from "@/data/yosakoi-works";
 
 export const metadata: Metadata = {
   title: {
@@ -41,6 +41,26 @@ const process = [
   ["収録", "歌、掛け声、楽器など必要な素材を録音します。"],
   ["仕上げ", "ミックス・マスタリングを行い、演舞用音源として完成させます。"],
 ];
+
+const journeyWorkSelections = [
+  { id: "work-120774", displayTitle: "暁-AKATSUKI-" },
+  { id: "work-120605", displayTitle: "はりまや橋で会いましょう" },
+  { id: "work-119035", displayTitle: "HOTAERU" },
+  { id: "work-119656", displayTitle: "土佐より" },
+] as const;
+
+const journeyWorks = journeyWorkSelections.map(({ id, displayTitle }) => {
+  const work = yosakoiWorks.find((candidate) => candidate.id === id);
+
+  if (!work) {
+    throw new Error(`OUR JOURNEY work "${id}" was not found.`);
+  }
+
+  return {
+    ...work,
+    workTitle: displayTitle,
+  };
+});
 
 const faqs = [
   {
@@ -229,22 +249,47 @@ export default function Home() {
           </div>
         </section>
 
-        <section
-          className="selected section section--warm"
-          aria-labelledby="selected-title"
-        >
+        <section className="journey section section--warm" aria-labelledby="journey-title">
           <div className="frame">
-            <div className="section-heading section-heading--split">
+            <div className="journey__intro">
               <div>
-                <p className="section-label">SELECTED WORKS</p>
-                <h2 id="selected-title">音楽が、隊列をひとつにする。</h2>
+                <p className="section-label">OUR JOURNEY</p>
+                <h2 id="journey-title">
+                  <span>國士舞双</span>
+                  <span>と、音楽を</span>
+                  <span>重ねて</span>
+                </h2>
+                <p className="journey__meta">國士舞双 : 高知県・東京都</p>
               </div>
-              <p>
-                作品を選んだときだけ、YouTube動画を1件読み込みます。
-                初期表示では外部プレイヤーを読み込みません。
-              </p>
+              <div className="journey__story">
+                <p className="journey__lead">
+                  よさこい祭りと関わり始めたのは、2008年のことです。
+                </p>
+                <p>
+                  きっかけは、高知と関東の合同チーム「國士舞双」を立ち上げられた、やんちゃ本舗様との出会いでした。「この国に二つと無いものを」というチームコンセプトを伺い、それならばと、毎年知恵をしぼりながら音楽をつくり続けること5年。2012年、高知よさこい祭り全国大会・後夜祭における「武政英策賞※」の受賞は、それまで重ねてきた一つひとつが、最高の結果となって表れた瞬間でした。
+                </p>
+                <p>
+                  よさこい工房祭彩様とのタッグも年を重ねるごとに深まり、音楽と演舞を含めた作品全体の完成度も、より高いものへと育ってきました。
+                </p>
+                <p>
+                  そして國士舞双は、2026年に結成20周年を迎えました。これから先も、高知よさこい界の風雲児として突き進んでいくその歩みを、音楽で支え続けられることを楽しみにしています。
+                </p>
+                <p className="journey__closing">
+                  よさこいは、その地域を彩る「お祭り」です。毎年訪れる熱い夏と、全国各地で出会う皆さまの笑顔を楽しみに、これからも制作を重ねてまいります。
+                </p>
+                <p className="journey__footnote">
+                  ※高知よさこい祭り本祭の入賞チームの中から、毎年1チームのみが選ばれる栄誉賞
+                </p>
+              </div>
             </div>
-            <SelectedWorks works={featuredWorks} />
+
+            <div className="journey__works">
+              <div className="journey__works-heading">
+                <p className="section-label">SELECTED CHAPTERS</p>
+                <span>2008—</span>
+              </div>
+              <SelectedWorks works={journeyWorks} />
+            </div>
           </div>
         </section>
 
