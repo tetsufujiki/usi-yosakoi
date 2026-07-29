@@ -17,28 +17,7 @@ function normalize(value: string) {
 }
 
 export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
-  const [query, setQuery] = useState("");
-  const [year, setYear] = useState("");
-  const [teamId, setTeamId] = useState("");
-  const [featuredOnly, setFeaturedOnly] = useState(false);
-  const [pageSize, setPageSize] = useState(desktopPageSize);
-  const [visibleCount, setVisibleCount] = useState(desktopPageSize);
-  const [activeWorkId, setActiveWorkId] = useState<string | null>(null);
-
-  useEffect(() => {
-    const media = window.matchMedia("(max-width: 720px)");
-    const updatePageSize = () => {
-      const nextSize = media.matches ? mobilePageSize : desktopPageSize;
-      setPageSize(nextSize);
-      setVisibleCount(nextSize);
-      setActiveWorkId(null);
-    };
-
-    updatePageSize();
-    media.addEventListener("change", updatePageSize);
-    return () => media.removeEventListener("change", updatePageSize);
-  }, []);
-
+  const sortedWorks = useMemo(() => sortWorksNewestFirst(works), [works]);
   const years = useMemo(
     () =>
       [...new Set(works.flatMap((work) => work.years))].sort(
@@ -46,6 +25,37 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
       ),
     [works],
   );
+  const latestYear = years[0];
+  const latestYearCount = works.filter((work) =>
+    work.years.includes(latestYear),
+  ).length;
+  const initialYear =
+    latestYearCount <= 2 && years[1] !== undefined ? years[1] : latestYear;
+  const initialYearCount = works.filter((work) =>
+    work.years.includes(initialYear),
+  ).length;
+  const [query, setQuery] = useState("");
+  const [year, setYear] = useState("");
+  const [teamId, setTeamId] = useState("");
+  const [pageSize, setPageSize] = useState(desktopPageSize);
+  const [visibleCount, setVisibleCount] = useState(initialYearCount);
+  const [isInitialYearFocus, setIsInitialYearFocus] = useState(true);
+  const [activeWorkId, setActiveWorkId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 720px)");
+    const updatePageSize = () => {
+      const nextSize = media.matches ? mobilePageSize : desktopPageSize;
+      setPageSize(nextSize);
+      setVisibleCount(initialYearCount);
+      setIsInitialYearFocus(true);
+      setActiveWorkId(null);
+    };
+
+    updatePageSize();
+    media.addEventListener("change", updatePageSize);
+    return () => media.removeEventListener("change", updatePageSize);
+  }, [initialYearCount]);
 
   const teams = useMemo(
     () =>
@@ -58,7 +68,7 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
   const filteredWorks = useMemo(() => {
     const normalizedQuery = normalize(query.trim());
 
-    return sortWorksNewestFirst(works).filter((work) => {
+    return sortedWorks.filter((work) => {
       const searchable = normalize(
         [work.teamName, work.workTitle, work.years.join(" ")].join(" "),
       );
@@ -66,29 +76,50 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
       return (
         (!normalizedQuery || searchable.includes(normalizedQuery)) &&
         (!year || work.years.includes(Number(year))) &&
-        (!teamId || work.teamId === teamId) &&
-        (!featuredOnly || work.featured)
+        (!teamId || work.teamId === teamId)
       );
     });
-  }, [featuredOnly, query, teamId, works, year]);
+  }, [query, sortedWorks, teamId, year]);
 
-  const visibleWorks = useMemo(
-    () => filteredWorks.slice(0, visibleCount),
-    [filteredWorks, visibleCount],
+  const hasFilters = Boolean(query || year || teamId);
+  const initialYearWorks = useMemo(
+    () => filteredWorks.filter((work) => work.years.includes(initialYear)),
+    [filteredWorks, initialYear],
   );
-  const hasFilters = Boolean(query || year || teamId || featuredOnly);
+  const visibleWorks = useMemo(
+    () =>
+      isInitialYearFocus && !hasFilters
+        ? initialYearWorks
+        : filteredWorks.slice(0, visibleCount),
+    [
+      filteredWorks,
+      hasFilters,
+      initialYearWorks,
+      isInitialYearFocus,
+      visibleCount,
+    ],
+  );
+  const resultCount =
+    isInitialYearFocus && !hasFilters
+      ? initialYearWorks.length
+      : filteredWorks.length;
+  const canLoadMore =
+    isInitialYearFocus && !hasFilters
+      ? initialYearWorks.length < filteredWorks.length
+      : visibleCount < filteredWorks.length;
 
   function resetFilters() {
     setQuery("");
     setYear("");
     setTeamId("");
-    setFeaturedOnly(false);
-    setVisibleCount(pageSize);
+    setVisibleCount(initialYearCount);
+    setIsInitialYearFocus(true);
     setActiveWorkId(null);
   }
 
   function resetVisibleCount() {
     setVisibleCount(pageSize);
+    setIsInitialYearFocus(false);
     setActiveWorkId(null);
   }
 
@@ -157,19 +188,6 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
             </select>
           </label>
 
-          <label className="featured-filter">
-            <input
-              type="checkbox"
-              checked={featuredOnly}
-              onChange={(event) => {
-                setFeaturedOnly(event.target.checked);
-                resetVisibleCount();
-              }}
-            />
-            <span className="featured-filter__mark" aria-hidden="true" />
-            注目作品のみ
-          </label>
-
           <button
             className="filter-reset"
             type="button"
@@ -183,9 +201,14 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
 
       <div className="archive-status">
         <p aria-live="polite">
-          <strong>{filteredWorks.length}</strong> 作品
+          <strong>{resultCount}</strong> 作品
         </p>
         <div className="filter-chips" aria-label="選択中の条件">
+          {isInitialYearFocus && !hasFilters ? (
+            <span className="filter-chips__focus">
+              {initialYear}年 初期表示
+            </span>
+          ) : null}
           {query ? (
             <button
               type="button"
@@ -219,17 +242,6 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
               {teams.find((team) => team.id === teamId)?.name} ×
             </button>
           ) : null}
-          {featuredOnly ? (
-            <button
-              type="button"
-              onClick={() => {
-                setFeaturedOnly(false);
-                resetVisibleCount();
-              }}
-            >
-              注目作品 ×
-            </button>
-          ) : null}
         </div>
       </div>
 
@@ -257,15 +269,23 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
         </div>
       )}
 
-      {visibleCount < filteredWorks.length ? (
+      {canLoadMore ? (
         <div className="load-more">
           <button
             type="button"
-            onClick={() => setVisibleCount((count) => count + pageSize)}
+            onClick={() => {
+              setIsInitialYearFocus(false);
+              setVisibleCount((count) =>
+                isInitialYearFocus
+                  ? initialYearWorks.length + pageSize
+                  : count + pageSize,
+              );
+              setActiveWorkId(null);
+            }}
           >
             もっと見る
             <span>
-              {visibleCount} / {filteredWorks.length}
+              {visibleWorks.length} / {filteredWorks.length}
             </span>
           </button>
         </div>

@@ -69,7 +69,7 @@ export default function ArchivePage() {
                 </div>
                 <div>
                   <dt>WORKS</dt>
-                  <dd>{yosakoiWorks.length} SAMPLE</dd>
+                  <dd>{yosakoiWorks.length} WORKS</dd>
                 </div>
               </dl>
             </div>
@@ -83,9 +83,16 @@ export default function ArchivePage() {
                 <p className="section-label">FIND A PERFORMANCE</p>
                 <h2 id="archive-list-title">作品を探す</h2>
               </div>
-              <p>
-                写真を必須にせず、チームと年度から生成したグラフィックで作品の個性を表現しています。
-              </p>
+              <div className="archive-section__note">
+                <p>
+                  その年の演舞を撮影していただいたYouTube映像の中から、
+                  音声が聞き取りやすいものを使用させていただいております。
+                </p>
+                <p>
+                  撮影してくださったカメラマンの皆さま、
+                  いつも本当にありがとうございます。
+                </p>
+              </div>
             </div>
 
             <ArchiveExplorer works={yosakoiWorks} />
@@ -129,16 +136,10 @@ export default function ArchivePage() {
               <h2 id="archive-inquiry-title">次の演舞を、音から。</h2>
             </div>
             <div>
-              <p>
-                チームのテーマや演舞時期が決まっている場合は、わかる範囲でお知らせください。
-              </p>
-              <a
-                className="inquiry__mail"
-                href="mailto:info@united-studio.com"
-              >
-                info@united-studio.com
-                <span aria-hidden="true">↗</span>
-              </a>
+              <Link className="inquiry__mail" href="/contact">
+                制作希望の内容を送る
+                <span aria-hidden="true">→</span>
+              </Link>
             </div>
           </div>
         </section>

@@ -19,7 +19,7 @@ export function SiteHeader() {
         <nav className="site-nav" aria-label="メインナビゲーション">
           <Link href="/">楽曲制作</Link>
           <Link href="/archive">作品アーカイブ</Link>
-          <a href="#inquiry">お問い合わせ</a>
+          <Link href="/contact">お問い合わせ</Link>
         </nav>
       </div>
     </header>
