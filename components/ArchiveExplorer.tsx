@@ -23,6 +23,7 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
   const [featuredOnly, setFeaturedOnly] = useState(false);
   const [pageSize, setPageSize] = useState(desktopPageSize);
   const [visibleCount, setVisibleCount] = useState(desktopPageSize);
+  const [activeWorkId, setActiveWorkId] = useState<string | null>(null);
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 720px)");
@@ -30,6 +31,7 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
       const nextSize = media.matches ? mobilePageSize : desktopPageSize;
       setPageSize(nextSize);
       setVisibleCount(nextSize);
+      setActiveWorkId(null);
     };
 
     updatePageSize();
@@ -70,7 +72,10 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
     });
   }, [featuredOnly, query, teamId, works, year]);
 
-  const visibleWorks = filteredWorks.slice(0, visibleCount);
+  const visibleWorks = useMemo(
+    () => filteredWorks.slice(0, visibleCount),
+    [filteredWorks, visibleCount],
+  );
   const hasFilters = Boolean(query || year || teamId || featuredOnly);
 
   function resetFilters() {
@@ -79,10 +84,12 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
     setTeamId("");
     setFeaturedOnly(false);
     setVisibleCount(pageSize);
+    setActiveWorkId(null);
   }
 
   function resetVisibleCount() {
     setVisibleCount(pageSize);
+    setActiveWorkId(null);
   }
 
   return (
@@ -229,7 +236,16 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
       {visibleWorks.length ? (
         <div className="archive-grid">
           {visibleWorks.map((work) => (
-            <WorkCard work={work} key={work.id} />
+            <WorkCard
+              work={work}
+              isActive={activeWorkId === work.id}
+              onTogglePlayback={() =>
+                setActiveWorkId((currentId) =>
+                  currentId === work.id ? null : work.id,
+                )
+              }
+              key={work.id}
+            />
           ))}
         </div>
       ) : (

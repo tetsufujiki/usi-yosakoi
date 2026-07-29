@@ -8,17 +8,39 @@ type YosakoiThumbnailProps = {
   priority?: boolean;
 };
 
+function getTextLength(value: string) {
+  return Array.from(value.trim()).length;
+}
+
+function getTextSize(value: string, mediumAt: number, longAt: number) {
+  const length = getTextLength(value);
+
+  if (length >= longAt) return "long";
+  if (length >= mediumAt) return "medium";
+  return "short";
+}
+
 export function YosakoiThumbnail({
   work,
   showYoutubeLabel = true,
   priority = false,
 }: YosakoiThumbnailProps) {
   const { variant, style } = getThumbnailTheme(work);
+  const teamSize = getTextSize(work.teamName, 7, 11);
+  const titleSize = work.workTitle
+    ? getTextSize(work.workTitle, 11, 17)
+    : "none";
+  const isDense =
+    teamSize !== "short" && titleSize !== "short" && titleSize !== "none";
 
   return (
     <div
       className="work-thumbnail"
       data-thumbnail-variant={variant}
+      data-team-size={teamSize}
+      data-title-size={titleSize}
+      data-density={isDense ? "dense" : "standard"}
+      data-has-title={work.workTitle ? "true" : "false"}
       style={style}
       aria-hidden="true"
     >
@@ -50,7 +72,7 @@ export function YosakoiThumbnail({
       {showYoutubeLabel && work.youtubeId ? (
         <span className="work-thumbnail__youtube">
           <span className="play-mark" />
-          YouTube
+          Play
         </span>
       ) : null}
     </div>
