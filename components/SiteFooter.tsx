@@ -9,6 +9,8 @@ type SiteFooterProps = {
 };
 
 export function SiteFooter({ kineticsVariant }: SiteFooterProps) {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="site-footer">
       {kineticsVariant ? (
@@ -28,12 +30,16 @@ export function SiteFooter({ kineticsVariant }: SiteFooterProps) {
           <Link href="/">楽曲制作</Link>
           <Link href="/archive">作品アーカイブ</Link>
           <Link href="/contact">お問い合わせ</Link>
-          <a href="mailto:info@united-studio.com">info@united-studio.com</a>
         </div>
       </div>
       <div className="site-footer__base">
-        <small>© UNITED STUDIO INC</small>
-        <small>Tokyo, Japan</small>
+        <a
+          href="https://united-studio.com"
+          target="_blank"
+          rel="noreferrer"
+        >
+          ©{currentYear} ユナイテッドスタジオ株式会社
+        </a>
       </div>
     </footer>
   );

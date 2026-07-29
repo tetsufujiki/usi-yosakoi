@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { SelectedWorks } from "@/components/SelectedWorks";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -172,9 +173,9 @@ export default function Home() {
               <div className="intro__note">
                 <span>THE QUESTION</span>
                 <strong>
-                  自分たちのチームなら、
-                  <br />
-                  どんな曲になるだろう。
+                  <span>自分たちのチーム</span>
+                  <span>なら、どんな曲に</span>
+                  <span>なるだろう。</span>
                 </strong>
               </div>
             </div>
@@ -252,34 +253,24 @@ export default function Home() {
         <section className="journey section section--warm" aria-labelledby="journey-title">
           <div className="frame">
             <div className="journey__intro">
-              <div>
-                <p className="section-label">OUR JOURNEY</p>
-                <h2 id="journey-title">
-                  <span>國士舞双</span>
-                  <span>と、音楽を</span>
-                  <span>重ねて</span>
-                </h2>
-                <p className="journey__meta">國士舞双 : 高知県・東京都</p>
-              </div>
-              <div className="journey__story">
-                <p className="journey__lead">
-                  よさこい祭りと関わり始めたのは、2008年のことです。
-                </p>
-                <p>
-                  きっかけは、高知と関東の合同チーム「國士舞双」を立ち上げられた、やんちゃ本舗様との出会いでした。「この国に二つと無いものを」というチームコンセプトを伺い、それならばと、毎年知恵をしぼりながら音楽をつくり続けること5年。2012年、高知よさこい祭り全国大会・後夜祭における「武政英策賞※」の受賞は、それまで重ねてきた一つひとつが、最高の結果となって表れた瞬間でした。
-                </p>
-                <p>
-                  よさこい工房祭彩様とのタッグも年を重ねるごとに深まり、音楽と演舞を含めた作品全体の完成度も、より高いものへと育ってきました。
-                </p>
-                <p>
-                  そして國士舞双は、2026年に結成20周年を迎えました。これから先も、高知よさこい界の風雲児として突き進んでいくその歩みを、音楽で支え続けられることを楽しみにしています。
-                </p>
-                <p className="journey__closing">
-                  よさこいは、その地域を彩る「お祭り」です。毎年訪れる熱い夏と、全国各地で出会う皆さまの笑顔を楽しみに、これからも制作を重ねてまいります。
-                </p>
-                <p className="journey__footnote">
-                  ※高知よさこい祭り本祭の入賞チームの中から、毎年1チームのみが選ばれる栄誉賞
-                </p>
+              <div className="journey__heading">
+                <div>
+                  <p className="section-label">OUR JOURNEY</p>
+                  <h2 id="journey-title">
+                    <span>國士舞双</span>
+                    <span>と、音楽を</span>
+                    <span>重ねて</span>
+                  </h2>
+                  <p className="journey__meta">國士舞双 : 高知県・東京都</p>
+                </div>
+                <figure className="journey__visual">
+                  <Image
+                    src="/images/yosakoi/kokushimusou-journey.webp"
+                    alt="國士舞双の演舞風景"
+                    fill
+                    sizes="(min-width: 820px) 55vw, calc(100vw - 40px)"
+                  />
+                </figure>
               </div>
             </div>
 
@@ -289,6 +280,27 @@ export default function Home() {
                 <span>2008—</span>
               </div>
               <SelectedWorks works={journeyWorks} />
+            </div>
+
+            <div className="journey__story">
+              <p className="journey__lead">
+                よさこい祭りと関わり始めたのは、2008年のことです。
+              </p>
+              <p>
+                きっかけは、高知と関東の合同チーム「國士舞双」を立ち上げられた、やんちゃ本舗様との出会いでした。「この国に二つと無いものを」というチームコンセプトを伺い、それならばと、毎年知恵をしぼりながら音楽をつくり続けること5年。2012年、高知よさこい祭り全国大会・後夜祭における「武政英策賞※」の受賞は、それまで重ねてきた一つひとつが、最高の結果となって表れた瞬間でした。
+              </p>
+              <p>
+                よさこい工房祭彩様とのタッグも年を重ねるごとに深まり、音楽と演舞を含めた作品全体の完成度も、より高いものへと育ってきました。
+              </p>
+              <p>
+                そして國士舞双は、2026年に結成20周年を迎えました。これから先も、高知よさこい界の風雲児として突き進んでいくその歩みを、音楽で支え続けられることを楽しみにしています。
+              </p>
+              <p className="journey__closing">
+                よさこいは、その地域を彩る「お祭り」です。毎年訪れる熱い夏と、全国各地で出会う皆さまの笑顔を楽しみに、これからも制作を重ねてまいります。
+              </p>
+              <p className="journey__footnote">
+                ※高知よさこい祭り本祭の入賞チームの中から、毎年1チームのみが選ばれる栄誉賞
+              </p>
             </div>
           </div>
         </section>
@@ -305,18 +317,21 @@ export default function Home() {
               <p className="section-label">WORK ARCHIVE</p>
               <p className="archive-invitation__count">
                 <strong>{yosakoiWorks.length}</strong>
-                <span>sample works</span>
+                <span>WORKS</span>
               </p>
             </div>
             <div>
               <h2 id="archive-title">
-                年、チーム、曲名から、
-                <br />
-                演舞楽曲を探す。
+                <span className="archive-invitation__title-line">
+                  年度、チーム、
+                </span>
+                <span className="archive-invitation__title-line">曲名から、</span>
+                <span className="archive-invitation__title-line">
+                  演舞楽曲を探す。
+                </span>
               </h2>
               <p>
-                現在は初期確認用のサンプルデータです。
-                次フェーズで既存104作品を整理して移行します。
+                2008年から現在までの制作実績を、年度・チーム・曲名から探せます。
               </p>
               <Link className="primary-link primary-link--dark" href="/archive">
                 アーカイブを開く
@@ -359,9 +374,8 @@ export default function Home() {
             <div>
               <p className="section-label">START A CONVERSATION</p>
               <h2 id="inquiry-title">
-                よさこい楽曲制作の
-                <br />
-                ご相談
+                <span className="inquiry__title-line">よさこい楽曲</span>
+                <span className="inquiry__title-line">制作のご相談</span>
               </h2>
             </div>
             <div>
