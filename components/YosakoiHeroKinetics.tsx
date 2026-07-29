@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 type RGB = readonly [number, number, number];
 
-export type KineticsVariant = "hero" | "finale";
+export type KineticsVariant = "hero" | "finale" | "contact";
 
 type NodeScale = "small" | "medium" | "large";
 type SpeedBand = "slow" | "medium" | "fast";
@@ -106,6 +106,23 @@ const variantTuning = {
     shockwaveCooldown: 2000,
     shockwaveIntervalMinimum: 5400,
     shockwaveIntervalMaximum: 8200,
+  },
+  contact: {
+    opacity: 0.58,
+    desktopMinimum: 14,
+    desktopMaximum: 22,
+    mobileMinimum: 7,
+    mobileMaximum: 11,
+    areaPerNode: 50000,
+    maximumSparks: 40,
+    maximumRings: 8,
+    shockwaveMinimum: 0.5,
+    shockwaveMaximum: 0.92,
+    collisionShockwaveChance: 0.28,
+    surgeShockwaveChance: 0.24,
+    shockwaveCooldown: 2600,
+    shockwaveIntervalMinimum: 6800,
+    shockwaveIntervalMaximum: 9800,
   },
 } as const;
 
@@ -347,14 +364,22 @@ export function YosakoiHeroKinetics({
               [".hero__actions", 0.46, 14],
               [".site-header__inner", 0.54, 12],
             ]
-          : [
-              [".site-footer__statement", 0.62, 16],
-              [".site-footer__links", 0.42, 12],
-              [".site-footer__base", 0.5, 10],
-            ];
+          : variant === "finale"
+            ? [
+                [".site-footer__statement", 0.62, 16],
+                [".site-footer__links", 0.42, 12],
+                [".site-footer__base", 0.5, 10],
+              ]
+            : [
+                [".contact-hero__inner", 0.52, 18],
+                [".contact-form-section__content", 0.44, 18],
+                [".contact-form", 0.38, 14],
+              ];
 
       quietZones = zoneDefinitions.flatMap(([selector, strength, padding]) => {
-        const element = document.querySelector<HTMLElement>(String(selector));
+        const element =
+          container.querySelector<HTMLElement>(String(selector)) ??
+          document.querySelector<HTMLElement>(String(selector));
         if (!element) return [];
 
         const rect = element.getBoundingClientRect();

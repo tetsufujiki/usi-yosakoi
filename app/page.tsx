@@ -107,9 +107,9 @@ export default function Home() {
                   作品アーカイブを見る
                   <span aria-hidden="true">↗</span>
                 </Link>
-                <a className="secondary-link" href="#inquiry">
+                <Link className="secondary-link" href="/contact">
                   制作について相談する
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -304,16 +304,10 @@ export default function Home() {
               </h2>
             </div>
             <div>
-              <p>
-                チームのテーマ、演舞時期、制作したい内容が決まっている場合は、わかる範囲でお知らせください。
-              </p>
-              <a
-                className="inquiry__mail"
-                href="mailto:info@united-studio.com"
-              >
-                info@united-studio.com
-                <span aria-hidden="true">↗</span>
-              </a>
+              <Link className="inquiry__mail" href="/contact">
+                制作希望の内容を送る
+                <span aria-hidden="true">→</span>
+              </Link>
             </div>
           </div>
         </section>
