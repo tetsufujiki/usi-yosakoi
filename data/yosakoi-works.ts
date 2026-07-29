@@ -1,3 +1,5 @@
+export type YosakoiWorkStatus = "published" | "draft";
+
 export type YosakoiWork = {
   id: string;
   years: number[];
@@ -12,6 +14,7 @@ export type YosakoiWork = {
   accentColor?: string;
   thumbnailImage?: string;
   order?: number;
+  status?: YosakoiWorkStatus;
 };
 
 /**
@@ -20,7 +23,7 @@ export type YosakoiWork = {
  * archive order changes. Years come from the displayed work label, while
  * team IDs retain the source filter slugs.
  */
-export const yosakoiWorks: YosakoiWork[] = [
+export const allYosakoiWorks: YosakoiWork[] = [
   {
     id: "work-120914",
     years: [2025],
@@ -854,6 +857,16 @@ export const yosakoiWorks: YosakoiWork[] = [
     youtubeId: "h2AaLyIgkBg",
   },
 ];
+
+export function isPublishedYosakoiWork(work: YosakoiWork) {
+  return work.status !== "draft";
+}
+
+/**
+ * Public consumers use this list. Keeping the filter here prevents drafts from
+ * leaking into Archive, search/filter options, counts, or Selected Works.
+ */
+export const yosakoiWorks = allYosakoiWorks.filter(isPublishedYosakoiWork);
 
 export const featuredWorks = yosakoiWorks
   .filter((work) => work.featured)

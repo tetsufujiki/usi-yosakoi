@@ -10,7 +10,8 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint . --ignore-pattern .next"
+    "lint": "eslint . --ignore-pattern .next",
+    "validate:archive": "node --no-warnings --experimental-strip-types scripts/validate-yosakoi-data.ts"
   },
   "dependencies": {
     "next": "16.2.6",

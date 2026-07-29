@@ -64,6 +64,38 @@ export function getYoutubeUrl(youtubeId: string) {
   return `https://www.youtube.com/watch?v=${youtubeId}`;
 }
 
+export function extractYoutubeId(value: string) {
+  const trimmedValue = value.trim();
+
+  if (/^[A-Za-z0-9_-]{11}$/.test(trimmedValue)) {
+    return trimmedValue;
+  }
+
+  try {
+    const url = new URL(trimmedValue);
+    const hostname = url.hostname.replace(/^www\./, "");
+
+    if (hostname === "youtu.be") {
+      return url.pathname.split("/").filter(Boolean)[0];
+    }
+
+    if (hostname === "youtube.com" || hostname === "m.youtube.com") {
+      if (url.pathname === "/watch") {
+        return url.searchParams.get("v") ?? undefined;
+      }
+
+      const [, route, id] = url.pathname.split("/");
+      if (route === "shorts" || route === "embed") {
+        return id || undefined;
+      }
+    }
+  } catch {
+    return undefined;
+  }
+
+  return undefined;
+}
+
 export function getYoutubeEmbedUrl(youtubeId: string) {
   return `https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0`;
 }
