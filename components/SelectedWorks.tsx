@@ -40,7 +40,7 @@ export function SelectedWorks({ works }: SelectedWorksProps) {
                 <span className="selected-work__caption">
                   <span>
                     <small>{formatYears(work.years)}</small>
-                    <strong>{work.teamName}</strong>
+                    <strong>{work.workTitle ?? "演舞楽曲"}</strong>
                   </span>
                   <span className="selected-work__play" aria-hidden="true">
                     {isActive ? "閉じる" : "再生"}
