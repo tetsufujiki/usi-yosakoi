@@ -1,43 +1,61 @@
 import type { Metadata } from "next";
 import "./globals.css";
-
-const siteUrl = "https://yosakoi.united-studio.com";
+import { ogImageUrl, siteDescription, siteTitle, siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "よさこい演舞楽曲制作｜UNITED STUDIO INC",
+    default: siteTitle,
     template: "%s｜UNITED STUDIO INC",
   },
-  description:
-    "チームのテーマや演舞構成に合わせた、よさこいオリジナル楽曲を制作。作編曲、歌・楽器収録、ミックス、マスタリングまで一貫対応します。",
+  description: siteDescription,
   robots: {
-    index: false,
-    follow: false,
+    index: true,
+    follow: true,
   },
   openGraph: {
     type: "website",
     locale: "ja_JP",
-    siteName: "YOSAKOI MUSIC — UNITED STUDIO INC",
-    title: "よさこい演舞楽曲制作｜UNITED STUDIO INC",
-    description:
-      "チームの物語、地域性、演舞構成に合わせて、一曲の中に流れと見せ場を設計します。",
+    siteName: "UNITED STUDIO INC",
+    title: siteTitle,
+    description: siteDescription,
     url: siteUrl,
     images: [
       {
-        url: "/og-yosakoi.png",
+        url: ogImageUrl,
         width: 1200,
         height: 630,
-        alt: "UNITED STUDIO / YOSAKOI よさこい演舞楽曲制作",
+        alt: siteTitle,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "よさこい演舞楽曲制作｜UNITED STUDIO INC",
-    description:
-      "チームの物語、地域性、演舞構成に合わせて、一曲の中に流れと見せ場を設計します。",
-    images: ["/og-yosakoi.png"],
+    title: siteTitle,
+    description: siteDescription,
+    images: [ogImageUrl],
+  },
+  icons: {
+    icon: [
+      {
+        url: "/usi_1024.png",
+        type: "image/png",
+        sizes: "1024x1024",
+      },
+    ],
+    shortcut: [
+      {
+        url: "/usi_1024.png",
+        type: "image/png",
+      },
+    ],
+    apple: [
+      {
+        url: "/usi_1024.png",
+        type: "image/png",
+        sizes: "1024x1024",
+      },
+    ],
   },
 };
 
