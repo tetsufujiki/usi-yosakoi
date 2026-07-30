@@ -754,6 +754,20 @@ button:disabled {
   border-left: 3px solid var(--color-warm);
 }
 
+.our-process__copy .our-process__statement {
+  max-width: 52rem;
+  color: var(--color-ink);
+  font-size: clamp(0.95rem, 2.1vw, 1.6rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.65;
+}
+
+.our-process__statement span {
+  display: block;
+  white-space: nowrap;
+}
+
 .finishing-process {
   padding-top: clamp(3.5rem, 7vw, 6.5rem);
 }
@@ -770,31 +784,45 @@ button:disabled {
 .finishing-process__grid {
   display: grid;
   margin-top: clamp(2.5rem, 5vw, 4.5rem);
-  border-top: 1px solid var(--color-line);
+  overflow: hidden;
+  border: 1px solid var(--color-line);
 }
 
 .finishing-process__item {
   position: relative;
-  padding: 2rem 0 2.5rem;
-  border-bottom: 1px solid var(--color-line);
+  min-width: 0;
+  padding: clamp(2rem, 5vw, 3.25rem);
+  background: color-mix(in srgb, var(--color-paper) 92%, var(--color-warm) 8%);
+}
+
+.finishing-process__item + .finishing-process__item {
+  border-top: 1px solid var(--color-line);
+}
+
+.finishing-process__item--mastering {
+  background: color-mix(in srgb, var(--color-paper) 91%, var(--color-tide) 9%);
 }
 
 .finishing-process__item::before {
   position: absolute;
-  top: -1px;
-  left: 0;
-  width: 3.5rem;
-  height: 2px;
+  top: clamp(2rem, 5vw, 3.25rem);
+  left: clamp(2rem, 5vw, 3.25rem);
+  width: 2.75rem;
+  height: 3px;
   content: "";
   background: var(--color-warm);
 }
 
+.finishing-process__item--mastering::before {
+  background: var(--color-tide);
+}
+
 .finishing-process__item h4 {
-  margin: 0 0 1.5rem;
+  margin: 1.75rem 0 1.75rem;
   font-family: var(--font-serif);
-  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-size: clamp(2.1rem, 4vw, 3.2rem);
   font-weight: 500;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.04em;
 }
 
 .finishing-process__item p {
@@ -802,7 +830,7 @@ button:disabled {
   margin: 0;
   color: var(--color-ink-soft);
   font-size: 0.94rem;
-  line-height: 2;
+  line-height: 2.05;
 }
 
 /* Journey */
@@ -2056,17 +2084,17 @@ button:disabled {
 
   .finishing-process__item {
     min-height: 24rem;
-    padding: 2.5rem clamp(2.5rem, 5vw, 5rem) 3rem 0;
+    padding: clamp(2.5rem, 4vw, 4rem);
   }
 
   .finishing-process__item + .finishing-process__item {
-    padding-right: 0;
-    padding-left: clamp(2.5rem, 5vw, 5rem);
+    border-top: 0;
     border-left: 1px solid var(--color-line);
   }
 
-  .finishing-process__item + .finishing-process__item::before {
-    left: clamp(2.5rem, 5vw, 5rem);
+  .finishing-process__item::before {
+    top: clamp(2.5rem, 4vw, 4rem);
+    left: clamp(2.5rem, 4vw, 4rem);
   }
 
   .process-list li {
@@ -2213,6 +2241,12 @@ button:disabled {
 
   .our-process__intro h2 > span + span {
     margin-left: 0;
+  }
+
+  .our-process__copy .our-process__statement {
+    padding: 1rem 0 0;
+    border-top: 3px solid var(--color-warm);
+    border-left: 0;
   }
 
   .archive-hero__summary br {

@@ -230,8 +230,9 @@ export default function Home() {
                 <p>
                   チームとの対話から音の種を探し、楽曲として育て、最後の響きまで丁寧に仕上げる。音楽をつくるとは、作編曲だけではなく、音色の選択からミキシング、マスタリングに至るまで、すべての工程に向き合うことだと考えています。
                 </p>
-                <p>
-                  一つひとつの工程にどれだけこだわれるかが、演舞を動かす音の説得力を決めます。
+                <p className="our-process__statement">
+                  <span>一つひとつの工程にどれだけこだわれるかが、</span>
+                  <span>演舞を動かす音の説得力を決めます。</span>
                 </p>
               </div>
             </div>
@@ -240,7 +241,10 @@ export default function Home() {
               <h3>Mix &amp; Mastering</h3>
               <div className="finishing-process__grid">
                 {finishingProcesses.map((item) => (
-                  <article className="finishing-process__item" key={item.title}>
+                  <article
+                    className={`finishing-process__item finishing-process__item--${item.title.toLowerCase()}`}
+                    key={item.title}
+                  >
                     <h4>{item.title}</h4>
                     <p>{item.copy}</p>
                   </article>
