@@ -20,9 +20,13 @@ export function SiteFooter({ kineticsVariant }: SiteFooterProps) {
         <div>
           <p className="site-footer__eyebrow">YOSAKOI SOUND WORKS</p>
           <p className="site-footer__statement">
-            チームの中にある物語を、
-            <br />
-            演舞を動かす音楽へ。
+            <span>チームの中にある</span>
+            <br className="site-footer__break site-footer__break--mobile" />
+            <span>物語を、</span>
+            <br className="site-footer__break site-footer__break--desktop" />
+            <span>演舞を動かす</span>
+            <br className="site-footer__break site-footer__break--mobile" />
+            <span>音楽へ。</span>
           </p>
         </div>
 

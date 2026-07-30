@@ -5,7 +5,10 @@ import { SelectedWorks } from "@/components/SelectedWorks";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { YosakoiHeroKinetics } from "@/components/YosakoiHeroKinetics";
-import { yosakoiWorks } from "@/data/yosakoi-works";
+import {
+  yosakoiArchiveStats,
+  yosakoiWorks,
+} from "@/data/yosakoi-works";
 
 export const metadata: Metadata = {
   title: {
@@ -320,7 +323,7 @@ export default function Home() {
             <div>
               <p className="section-label">WORK ARCHIVE</p>
               <p className="archive-invitation__count">
-                <strong>{yosakoiWorks.length}</strong>
+                <strong>{yosakoiArchiveStats.workCount}</strong>
                 <span>WORKS</span>
               </p>
             </div>

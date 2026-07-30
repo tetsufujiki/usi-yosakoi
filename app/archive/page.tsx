@@ -3,7 +3,10 @@ import Link from "next/link";
 import { ArchiveExplorer } from "@/components/ArchiveExplorer";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
-import { yosakoiWorks } from "@/data/yosakoi-works";
+import {
+  yosakoiArchiveStats,
+  yosakoiWorks,
+} from "@/data/yosakoi-works";
 
 export const metadata: Metadata = {
   title: "よさこい楽曲制作実績・演舞作品アーカイブ",
@@ -29,10 +32,6 @@ export const metadata: Metadata = {
 };
 
 export default function ArchivePage() {
-  const years = yosakoiWorks.flatMap((work) => work.years);
-  const oldestYear = Math.min(...years);
-  const newestYear = Math.max(...years);
-
   return (
     <>
       <SiteHeader />
@@ -48,10 +47,10 @@ export default function ArchivePage() {
           <div className="frame archive-hero__inner">
             <div>
               <p className="section-label">YOSAKOI WORK ARCHIVE</p>
-              <h1 id="archive-hero-title">
-                音に残る、
-                <br />
-                それぞれの演舞。
+              <h1 id="archive-hero-title" className="archive-hero__title">
+                <span>音に残る、</span>
+                <span>それぞれの</span>
+                <span>演舞。</span>
               </h1>
             </div>
             <div className="archive-hero__summary">
@@ -64,12 +63,13 @@ export default function ArchivePage() {
                 <div>
                   <dt>PERIOD</dt>
                   <dd>
-                    {oldestYear} — {newestYear}
+                    {yosakoiArchiveStats.oldestYear} —{" "}
+                    {yosakoiArchiveStats.newestYear}
                   </dd>
                 </div>
                 <div>
                   <dt>WORKS</dt>
-                  <dd>{yosakoiWorks.length} WORKS</dd>
+                  <dd>{yosakoiArchiveStats.workCount} WORKS</dd>
                 </div>
               </dl>
             </div>
@@ -107,14 +107,15 @@ export default function ArchivePage() {
             <div>
               <p className="section-label">BEHIND THE MUSIC</p>
               <h2 id="archive-return-title">
-                作品の先にある、
-                <br />
-                制作の考え方へ。
+                <span className="archive-return__title-line">作品を支える、</span>
+                <span className="archive-return__title-line">
+                  音づくりの考え方。
+                </span>
               </h2>
             </div>
             <div>
               <p>
-                ヒアリング、構成設計、作編曲、収録、仕上げ。
+                ヒアリング、響きの探索、作編曲、収録、仕上げ。
                 演舞のための一曲が完成するまでをご紹介しています。
               </p>
               <Link className="primary-link" href="/">
@@ -133,7 +134,9 @@ export default function ArchivePage() {
           <div className="frame inquiry__inner">
             <div>
               <p className="section-label">START A CONVERSATION</p>
-              <h2 id="archive-inquiry-title">次の演舞を、音から。</h2>
+              <h2 id="archive-inquiry-title" className="archive-inquiry__title">
+                <span>次の演舞を、</span><span>音から。</span>
+              </h2>
             </div>
             <div>
               <Link className="inquiry__mail" href="/contact">
