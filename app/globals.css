@@ -2286,7 +2286,7 @@ button:disabled {
     left: 72%;
     font-size: clamp(12rem, 18vw, 18rem);
     opacity: 0.045;
-    transform: translate(-50%, -50%) rotate(90deg);
+    transform: translate(-50%, -50%) rotate(84deg);
   }
 
   .hero__graphic-index {
@@ -2296,6 +2296,7 @@ button:disabled {
     font-size: clamp(0.82rem, 1.05vw, 1.1rem);
     letter-spacing: 0.32em;
     opacity: 0.34;
+    transform: translateY(-50%) rotate(86deg);
   }
 
   .hero__graphic-index::before {
