@@ -108,7 +108,7 @@ const variantTuning = {
     shockwaveIntervalMaximum: 8200,
   },
   contact: {
-    opacity: 0.58,
+    opacity: 0.65,
     desktopMinimum: 14,
     desktopMaximum: 22,
     mobileMinimum: 7,

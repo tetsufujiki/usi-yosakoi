@@ -99,10 +99,7 @@ export default function ArchivePage() {
           </div>
         </section>
 
-        <section
-          className="archive-return section section--ink"
-          aria-labelledby="archive-return-title"
-        >
+        <section className="archive-return section" aria-labelledby="archive-return-title">
           <div className="frame archive-return__inner">
             <div>
               <p className="section-label">BEHIND THE MUSIC</p>
@@ -118,7 +115,7 @@ export default function ArchivePage() {
                 ヒアリング、響きの探索、作編曲、収録、仕上げ。
                 演舞のための一曲が完成するまでをご紹介しています。
               </p>
-              <Link className="primary-link" href="/">
+              <Link className="primary-link primary-link--sun" href="/">
                 楽曲制作について
                 <span aria-hidden="true">→</span>
               </Link>

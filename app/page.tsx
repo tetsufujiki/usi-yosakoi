@@ -102,6 +102,18 @@ export default function Home() {
             </div>
           </div>
 
+          <p className="hero__background-poem" aria-hidden="true">
+            <span>heat gathers,</span>
+            <span>a current turns,</span>
+            <span>and the scene opens</span>
+          </p>
+
+          <div className="hero__graphic-index" aria-hidden="true">
+            <span>FORMATION</span>
+            <span>FLOW</span>
+            <span>BURST</span>
+          </div>
+
           <div className="hero__inner">
             <div className="hero__copy">
               <p className="hero__eyebrow">
@@ -121,7 +133,7 @@ export default function Home() {
               </p>
               <div className="hero__actions">
                 <Link className="primary-link" href="/archive">
-                  作品アーカイブを見る
+                  歴代作品アーカイブを見る
                   <span aria-hidden="true">↗</span>
                 </Link>
                 <Link className="secondary-link" href="/contact">
@@ -130,18 +142,6 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="hero__aside" aria-hidden="true">
-              <div className="hero__index">
-                <span>FORMATION</span>
-                <span>FLOW</span>
-                <span>BURST</span>
-              </div>
-              <p className="hero__poem">
-                <span>heat gathers,</span>
-                <span>a current turns,</span>
-                <span>and the scene opens</span>
-              </p>
-            </div>
           </div>
 
           <a className="hero__scroll" href="#intro">
@@ -340,7 +340,7 @@ export default function Home() {
               <p>
                 2008年から現在までの制作実績を、年度・チーム・曲名から探せます。
               </p>
-              <Link className="primary-link primary-link--dark" href="/archive">
+              <Link className="primary-link primary-link--sun" href="/archive">
                 アーカイブを開く
                 <span aria-hidden="true">→</span>
               </Link>
