@@ -335,7 +335,7 @@ button:disabled {
   overflow: hidden;
   background:
     radial-gradient(circle at 74% 20%, rgba(241, 185, 79, 0.16), transparent 24rem),
-    linear-gradient(145deg, #132b2b 0%, #163c3a 48%, #1e3430 100%);
+    linear-gradient(145deg, #122828 0%, #153735 48%, #1c302d 100%);
   color: var(--color-cream);
 }
 
