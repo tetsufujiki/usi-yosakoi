@@ -9,16 +9,53 @@ import {
   yosakoiArchiveStats,
   yosakoiWorks,
 } from "@/data/yosakoi-works";
+import { siteDescription, siteIconUrl, siteTitle, siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: {
     absolute: "よさこい演舞楽曲制作｜UNITED STUDIO INC",
   },
-  description:
-    "チームのテーマや演舞構成に合わせた、よさこいオリジナル楽曲を制作。作編曲、歌・楽器収録、ミックス、マスタリングまで一貫対応します。",
+  description: siteDescription,
   alternates: {
-    canonical: "/",
+    canonical: siteUrl,
   },
+};
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
+      name: "UNITED STUDIO INC",
+      url: siteUrl,
+      logo: siteIconUrl,
+      sameAs: ["https://united-studio.com"],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      name: siteTitle,
+      url: siteUrl,
+      publisher: {
+        "@id": `${siteUrl}/#organization`,
+      },
+    },
+    {
+      "@type": "Service",
+      "@id": `${siteUrl}/#service`,
+      name: "よさこい演舞楽曲制作",
+      description: siteDescription,
+      provider: {
+        "@id": `${siteUrl}/#organization`,
+      },
+      areaServed: {
+        "@type": "Country",
+        name: "日本",
+      },
+      serviceType: "よさこい楽曲制作",
+    },
+  ],
 };
 
 const finishingProcesses = [
@@ -87,6 +124,10 @@ const faqs = [
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <SiteHeader />
       <main id="main-content">
         <section className="hero" aria-labelledby="hero-title">

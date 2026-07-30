@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export function SiteHeader() {
@@ -9,11 +10,15 @@ export function SiteHeader() {
           href="/"
           aria-label="Yosakoi Sound Works トップ"
         >
-          <span className="site-identity__mark" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-          </span>
+          <Image
+            className="site-identity__icon"
+            src="/usi_1024.png"
+            alt=""
+            width={1024}
+            height={1024}
+            sizes="24px"
+            priority
+          />
           <span>
             <strong>YOSAKOI SOUND WORKS</strong>
             <small>UNITED STUDIO INC</small>
