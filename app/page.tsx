@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { SelectedWorks } from "@/components/SelectedWorks";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { YosakoiHeroKinetics } from "@/components/YosakoiHeroKinetics";
-import { featuredWorks, yosakoiWorks } from "@/data/yosakoi-works";
+import {
+  yosakoiArchiveStats,
+  yosakoiWorks,
+} from "@/data/yosakoi-works";
 
 export const metadata: Metadata = {
   title: {
@@ -17,36 +21,50 @@ export const metadata: Metadata = {
   },
 };
 
-const features = [
+const finishingProcesses = [
   {
-    number: "01",
-    title: "Theme Design",
-    copy: "チームのテーマや演舞構成をもとに、楽曲全体の流れを設計します。",
+    title: "Mixing",
+    copy: "楽曲を構成する一つひとつの音に向き合い、音量や音色、響き、奥行きを細かく調整します。それぞれの音が持つ力を引き出しながら、演舞を動かす一つの音楽へとまとめていきます。",
   },
   {
-    number: "02",
-    title: "Composition & Arrangement",
-    copy: "和の要素、現代的なサウンド、歌、掛け声を組み合わせ、一曲として構成します。",
-  },
-  {
-    number: "03",
-    title: "Recording",
-    copy: "歌、掛け声、楽器収録など、必要な音を制作内容に合わせて収録します。",
-  },
-  {
-    number: "04",
-    title: "Mix & Mastering",
-    copy: "演舞会場でも映えるよう、迫力と聴きやすさのバランスを整えます。",
+    title: "Mastering",
+    copy: "会場の広さや音響環境が異なる中でも、できるだけ踊り子に届き、演舞を支える音になるよう、全体の音圧や響きを整えます。地方車で使用する音源も、それぞれの再生環境を考慮しながら、この工程で仕上げます。",
   },
 ];
 
 const process = [
   ["ヒアリング", "テーマ、演舞構成、希望する方向性を確認します。"],
-  ["構成設計", "見せ場、展開、歌や掛け声の入り方を整理します。"],
-  ["作編曲", "チームの個性に合わせて楽曲を制作します。"],
+  [
+    "響きの探索",
+    "リズム、音色、フレーズを試しながら、曲が動き始めるきっかけを探します。",
+  ],
+  [
+    "作編曲",
+    "音の種を広げながら、チームの個性と演舞に合う楽曲へと仕上げていきます。",
+  ],
   ["収録", "歌、掛け声、楽器など必要な素材を録音します。"],
   ["仕上げ", "ミックス・マスタリングを行い、演舞用音源として完成させます。"],
 ];
+
+const journeyWorkSelections = [
+  { id: "work-120774", displayTitle: "暁-AKATSUKI-" },
+  { id: "work-120605", displayTitle: "はりまや橋で会いましょう" },
+  { id: "work-119035", displayTitle: "HOTAERU" },
+  { id: "work-119656", displayTitle: "土佐より" },
+] as const;
+
+const journeyWorks = journeyWorkSelections.map(({ id, displayTitle }) => {
+  const work = yosakoiWorks.find((candidate) => candidate.id === id);
+
+  if (!work) {
+    throw new Error(`OUR JOURNEY work "${id}" was not found.`);
+  }
+
+  return {
+    ...work,
+    workTitle: displayTitle,
+  };
+});
 
 const faqs = [
   {
@@ -84,27 +102,38 @@ export default function Home() {
             </div>
           </div>
 
+          <p className="hero__background-poem" aria-hidden="true">
+            <span>heat gathers,</span>
+            <span>a current turns,</span>
+            <span>and the scene opens</span>
+          </p>
+
+          <div className="hero__graphic-index" aria-hidden="true">
+            <span>FORMATION</span>
+            <span>FLOW</span>
+            <span>BURST</span>
+          </div>
+
           <div className="hero__inner">
             <div className="hero__copy">
               <p className="hero__eyebrow">
-                <span>YOSAKOI MUSIC</span>
+                <span>YOSAKOI SOUND WORKS</span>
                 <span>EST. 2008</span>
               </p>
               <h1 id="hero-title">
-                よさこい演舞の
-                <br />
-                テーマと熱量を、
-                <br />
-                <em>記憶に残る音楽へ。</em>
+                <span className="hero__title-line">チームの想いを、</span>
+                <span className="hero__title-line">その熱量を、</span>
+                <em className="hero__title-line hero__title-line--final">
+                  <span>記憶に残る</span>
+                  <span>音楽へ。</span>
+                </em>
               </h1>
-              <p className="hero__lead">
-                チームの物語、地域性、演舞構成に合わせて、
-                <br />
-                一曲の中に流れと見せ場を設計します。
+              <p className="hero__subcopy">
+                その一曲が、忘れられない景色を生む。
               </p>
               <div className="hero__actions">
                 <Link className="primary-link" href="/archive">
-                  作品アーカイブを見る
+                  歴代作品アーカイブを見る
                   <span aria-hidden="true">↗</span>
                 </Link>
                 <Link className="secondary-link" href="/contact">
@@ -113,12 +142,6 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="hero__index" aria-hidden="true">
-              <span>FORMATION</span>
-              <span>FLOW</span>
-              <span>BURST</span>
-              <strong>音が、演舞を前へ進める。</strong>
-            </div>
           </div>
 
           <a className="hero__scroll" href="#intro">
@@ -132,9 +155,14 @@ export default function Home() {
             <div>
               <p className="section-label">ABOUT THE MUSIC</p>
               <h2 id="intro-title">
-                演舞のための一曲を、
-                <br />
-                チームごとに設計する。
+                <span className="intro__title-line">
+                  <span>演舞のための</span>
+                  <span>一曲を、</span>
+                </span>
+                <span className="intro__title-line">
+                  <span>チームごとに</span>
+                  <span>設計する。</span>
+                </span>
               </h2>
             </div>
             <div className="intro__body">
@@ -148,9 +176,9 @@ export default function Home() {
               <div className="intro__note">
                 <span>THE QUESTION</span>
                 <strong>
-                  自分たちのチームなら、
-                  <br />
-                  どんな曲になるだろう。
+                  <span>自分たちのチーム</span>
+                  <span>なら、どんな曲に</span>
+                  <span>なるだろう。</span>
                 </strong>
               </div>
             </div>
@@ -158,34 +186,9 @@ export default function Home() {
         </section>
 
         <section
-          className="features section section--ink"
-          aria-labelledby="features-title"
+          className="process section section--ink"
+          aria-labelledby="process-title"
         >
-          <div className="frame">
-            <div className="section-heading section-heading--split">
-              <div>
-                <p className="section-label">WHAT WE DESIGN</p>
-                <h2 id="features-title">制作の特徴</h2>
-              </div>
-              <p>
-                音色を足すだけではなく、演舞の始まりから余韻までをひとつの構成として考えます。
-              </p>
-            </div>
-
-            <div className="feature-grid">
-              {features.map((feature) => (
-                <article className="feature" key={feature.number}>
-                  <span>{feature.number}</span>
-                  <h3>{feature.title}</h3>
-                  <p>{feature.copy}</p>
-                  <i aria-hidden="true" />
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="process section" aria-labelledby="process-title">
           <div className="frame">
             <div className="section-heading">
               <p className="section-label">FROM DIALOGUE TO PERFORMANCE</p>
@@ -214,21 +217,98 @@ export default function Home() {
         </section>
 
         <section
-          className="selected section section--warm"
-          aria-labelledby="selected-title"
+          className="our-process section"
+          aria-labelledby="our-process-title"
         >
           <div className="frame">
-            <div className="section-heading section-heading--split">
+            <div className="our-process__intro">
               <div>
-                <p className="section-label">SELECTED WORKS</p>
-                <h2 id="selected-title">音楽が、隊列をひとつにする。</h2>
+                <p className="section-label">OUR PROCESS</p>
+                <h2 id="our-process-title">
+                  <span>音が演舞を</span>
+                  <span>動かすまで</span>
+                </h2>
               </div>
+              <div className="our-process__copy">
+                <p>
+                  チームとの対話から音の種を探し、楽曲として育て、最後の響きまで丁寧に仕上げる。音楽をつくるとは、作編曲だけではなく、音色の選択からミキシング、マスタリングに至るまで、すべての工程に向き合うことだと考えています。
+                </p>
+                <p className="our-process__statement">
+                  <span>一つひとつの工程にどれだけこだわれるかが、</span>
+                  <span>演舞を動かす音の説得力を決めます。</span>
+                </p>
+              </div>
+            </div>
+
+            <div className="finishing-process">
+              <h3>Mix &amp; Mastering</h3>
+              <div className="finishing-process__grid">
+                {finishingProcesses.map((item) => (
+                  <article
+                    className={`finishing-process__item finishing-process__item--${item.title.toLowerCase()}`}
+                    key={item.title}
+                  >
+                    <h4>{item.title}</h4>
+                    <p>{item.copy}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="journey section section--warm" aria-labelledby="journey-title">
+          <div className="frame">
+            <div className="journey__intro">
+              <div className="journey__heading">
+                <div>
+                  <p className="section-label">OUR JOURNEY</p>
+                  <h2 id="journey-title">
+                    <span>國士舞双</span>
+                    <span>と、音楽を</span>
+                    <span>重ねて</span>
+                  </h2>
+                  <p className="journey__meta">國士舞双 : 高知県・東京都</p>
+                </div>
+                <figure className="journey__visual">
+                  <Image
+                    src="/images/yosakoi/kokushimusou-journey.webp"
+                    alt="國士舞双の演舞風景"
+                    fill
+                    sizes="(min-width: 820px) 55vw, calc(100vw - 40px)"
+                  />
+                </figure>
+              </div>
+            </div>
+
+            <div className="journey__works">
+              <div className="journey__works-heading">
+                <p className="section-label">SELECTED CHAPTERS</p>
+                <span>2008—</span>
+              </div>
+              <SelectedWorks works={journeyWorks} />
+            </div>
+
+            <div className="journey__story">
+              <p className="journey__lead">
+                よさこい祭りと関わり始めたのは、2008年のことです。
+              </p>
               <p>
-                作品を選んだときだけ、YouTube動画を1件読み込みます。
-                初期表示では外部プレイヤーを読み込みません。
+                きっかけは、高知と関東の合同チーム「國士舞双」を立ち上げられた、やんちゃ本舗様との出会いでした。「この国に二つと無いものを」というチームコンセプトを伺い、それならばと、毎年知恵をしぼりながら音楽をつくり続けること5年。2012年、高知よさこい祭り全国大会・後夜祭における「武政英策賞※」の受賞は、それまで重ねてきた一つひとつが、最高の結果となって表れた瞬間でした。
+              </p>
+              <p>
+                よさこい工房祭彩様とのタッグも年を重ねるごとに深まり、音楽と演舞を含めた作品全体の完成度も、より高いものへと育ってきました。
+              </p>
+              <p>
+                そして國士舞双は、2026年に結成20周年を迎えました。これから先も、高知よさこい界の風雲児として突き進んでいくその歩みを、音楽で支え続けられることを楽しみにしています。
+              </p>
+              <p className="journey__closing">
+                よさこいは、その地域を彩る「お祭り」です。毎年訪れる熱い夏と、全国各地で出会う皆さまの笑顔を楽しみに、これからも制作を重ねてまいります。
+              </p>
+              <p className="journey__footnote">
+                ※高知よさこい祭り本祭の入賞チームの中から、毎年1チームのみが選ばれる栄誉賞
               </p>
             </div>
-            <SelectedWorks works={featuredWorks} />
           </div>
         </section>
 
@@ -243,21 +323,24 @@ export default function Home() {
             <div>
               <p className="section-label">WORK ARCHIVE</p>
               <p className="archive-invitation__count">
-                <strong>{yosakoiWorks.length}</strong>
-                <span>sample works</span>
+                <strong>{yosakoiArchiveStats.workCount}</strong>
+                <span>WORKS</span>
               </p>
             </div>
             <div>
               <h2 id="archive-title">
-                年、チーム、曲名から、
-                <br />
-                演舞楽曲を探す。
+                <span className="archive-invitation__title-line">
+                  年度、チーム、
+                </span>
+                <span className="archive-invitation__title-line">曲名から、</span>
+                <span className="archive-invitation__title-line">
+                  演舞楽曲を探す。
+                </span>
               </h2>
               <p>
-                現在は初期確認用のサンプルデータです。
-                次フェーズで既存104作品を整理して移行します。
+                2008年から現在までの制作実績を、年度・チーム・曲名から探せます。
               </p>
-              <Link className="primary-link primary-link--dark" href="/archive">
+              <Link className="primary-link primary-link--sun" href="/archive">
                 アーカイブを開く
                 <span aria-hidden="true">→</span>
               </Link>
@@ -298,9 +381,8 @@ export default function Home() {
             <div>
               <p className="section-label">START A CONVERSATION</p>
               <h2 id="inquiry-title">
-                よさこい楽曲制作の
-                <br />
-                ご相談
+                <span className="inquiry__title-line">よさこい楽曲</span>
+                <span className="inquiry__title-line">制作のご相談</span>
               </h2>
             </div>
             <div>

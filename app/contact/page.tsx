@@ -30,7 +30,10 @@ export default function ContactPage() {
           <div className="frame contact-hero__inner">
             <div>
               <p className="section-label">PRODUCTION INQUIRY</p>
-              <h1 id="contact-title">制作をご検討中のチームへ</h1>
+              <h1 id="contact-title" className="contact-hero__title">
+                <span>制作をご検討</span>
+                <span>中のチーム様</span>
+              </h1>
             </div>
             <div className="contact-hero__copy">
               <p>
@@ -77,9 +80,16 @@ export default function ContactPage() {
             <div className="contact-form-section__heading">
               <p className="section-label">TELL US ABOUT THE PERFORMANCE</p>
               <h2 id="contact-form-title">制作希望の内容を送る</h2>
-              <p>
-                現時点で決まっている内容だけで構いません。
-                制作時期を判断できる情報を中心にご記入ください。
+              <p className="contact-form-section__description">
+                <span>
+                  制作時期や対応可否を判断するため、演舞予定時期、音源が必要となる時期、
+                </span>
+                <span>
+                  制作内容、チームや演舞のイメージなどを、できるだけ具体的にご記入ください。
+                </span>
+                <span>
+                  未定の項目は、現段階での予定やご希望をお知らせください。
+                </span>
               </p>
             </div>
             <ContactForm />

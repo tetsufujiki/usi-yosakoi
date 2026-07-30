@@ -286,9 +286,11 @@ export function ContactForm() {
           回答を控えさせていただく場合がございます。
         </p>
         <button type="submit" disabled={status === "submitting"}>
-          {status === "submitting"
-            ? "送信中です"
-            : "制作希望の内容を送る"}
+          <span className="contact-form__submit-label">
+            {status === "submitting"
+              ? "送信中です"
+              : "制作希望の内容を送る"}
+          </span>
           <span aria-hidden="true">→</span>
         </button>
         <div

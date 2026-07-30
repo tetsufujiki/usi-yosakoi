@@ -81,11 +81,7 @@ export function SelectedWorks({ works }: SelectedWorksProps) {
               </a>
             </div>
           </div>
-        ) : (
-          <p className="selected-player__empty">
-            作品を選ぶと、ここに動画を1件だけ読み込みます。
-          </p>
-        )}
+        ) : null}
       </div>
     </>
   );

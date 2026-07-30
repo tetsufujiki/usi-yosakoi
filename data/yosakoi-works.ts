@@ -868,6 +868,14 @@ export function isPublishedYosakoiWork(work: YosakoiWork) {
  */
 export const yosakoiWorks = allYosakoiWorks.filter(isPublishedYosakoiWork);
 
+const publishedYears = yosakoiWorks.flatMap((work) => work.years);
+
+export const yosakoiArchiveStats = {
+  workCount: yosakoiWorks.length,
+  oldestYear: Math.min(...publishedYears),
+  newestYear: Math.max(...publishedYears),
+} as const;
+
 export const featuredWorks = yosakoiWorks
   .filter((work) => work.featured)
   .slice(0, 6);
