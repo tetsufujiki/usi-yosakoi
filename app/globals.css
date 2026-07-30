@@ -11,6 +11,7 @@
   --color-warm: #e35f3f;
   --color-sun: #f1b94f;
   --color-tide: #2b7775;
+  --color-studio-gold: #c9b89a;
   --color-cream: #fff8ea;
   --font-sans:
     "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP",
@@ -1417,6 +1418,140 @@ button:disabled {
   text-align: left;
 }
 
+.work-card__play .work-thumbnail__youtube {
+  top: 50%;
+  right: auto;
+  left: 50%;
+  z-index: 3;
+  gap: 0.35rem;
+  min-height: 2.15rem;
+  padding: 0.38rem 0.68rem;
+  border-color: rgba(21, 35, 33, 0.44);
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(
+    180deg,
+    #e1d7c5 0%,
+    var(--color-studio-gold) 48%,
+    #a9916e 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 248, 234, 0.84),
+    inset 0 -1px 0 rgba(21, 35, 33, 0.18),
+    0 6px 16px rgba(20, 37, 34, 0.2);
+  color: var(--color-night);
+  font-size: 0.54rem;
+  letter-spacing: 0.1em;
+  text-shadow: 0 1px 0 rgba(255, 248, 234, 0.42);
+  backdrop-filter: blur(4px);
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.work-card__play .work-thumbnail__youtube .play-mark {
+  position: relative;
+  width: 0.88rem;
+  height: 0.88rem;
+  border: 1px solid rgba(21, 35, 33, 0.22);
+  border-radius: 50%;
+  background: rgba(255, 248, 234, 0.45);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.52);
+  transition:
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.work-card__play .work-thumbnail__youtube .play-mark::after {
+  position: absolute;
+  top: 50%;
+  left: 52%;
+  width: 0;
+  height: 0;
+  border-top: 2.5px solid transparent;
+  border-bottom: 2.5px solid transparent;
+  border-left: 4px solid currentColor;
+  content: "";
+  transform: translate(-42%, -50%);
+}
+
+.work-card__play:hover .work-thumbnail__youtube {
+  border-color: var(--color-night);
+  transform: translate(-50%, calc(-50% - 2px));
+  background: linear-gradient(
+    180deg,
+    var(--color-cream) 0%,
+    #e4d8c4 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(21, 35, 33, 0.12),
+    0 12px 26px rgba(20, 37, 34, 0.3);
+  color: var(--color-night);
+}
+
+.work-card__play:hover .work-thumbnail__youtube .play-mark {
+  transform: translateX(1px);
+  background: rgba(201, 184, 154, 0.58);
+}
+
+.work-card__play:focus-visible {
+  outline: 0;
+}
+
+.work-card__play:focus-visible .work-thumbnail__youtube {
+  outline: 3px solid var(--color-sun);
+  outline-offset: 4px;
+}
+
+@media (min-width: 640px) {
+  .work-card__play .work-thumbnail__youtube {
+    gap: 0.32rem;
+    min-height: 2rem;
+    padding: 0.33rem 0.62rem;
+    font-size: 0.51rem;
+  }
+
+  .work-card__play .work-thumbnail__youtube .play-mark {
+    width: 0.82rem;
+    height: 0.82rem;
+  }
+}
+
+@media (min-width: 1040px) {
+  .work-card__play .work-thumbnail__youtube {
+    gap: 0.28rem;
+    min-height: 1.85rem;
+    padding: 0.28rem 0.56rem;
+    font-size: 0.47rem;
+    letter-spacing: 0.09em;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 248, 234, 0.84),
+      inset 0 -1px 0 rgba(21, 35, 33, 0.18),
+      0 5px 13px rgba(20, 37, 34, 0.18);
+  }
+
+  .work-card__play .work-thumbnail__youtube .play-mark {
+    width: 0.74rem;
+    height: 0.74rem;
+  }
+}
+
+@media (min-width: 1320px) {
+  .work-card__play .work-thumbnail__youtube {
+    min-height: 1.75rem;
+    padding: 0.24rem 0.52rem;
+    font-size: 0.45rem;
+  }
+
+  .work-card__play .work-thumbnail__youtube .play-mark {
+    width: 0.7rem;
+    height: 0.7rem;
+  }
+}
+
 .work-card__player {
   position: relative;
   overflow: hidden;
@@ -1826,6 +1961,16 @@ button:disabled {
   margin: 0 0 2.5rem;
   color: rgba(255, 248, 234, 0.7);
   font-size: 0.92rem;
+}
+
+.archive-hero__description span {
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
+
+.archive-hero__description-break--mobile {
+  display: none;
 }
 
 .archive-hero dl {
@@ -2363,10 +2508,6 @@ button:disabled {
     border-left: 0;
   }
 
-  .archive-hero__summary br {
-    display: none;
-  }
-
   .work-thumbnail__youtube {
     top: 0.65rem;
     right: 0.65rem;
@@ -2374,12 +2515,22 @@ button:disabled {
 }
 
 @media (max-width: 359px) {
+  .archive-hero__summary > p {
+    font-size: 0.8rem;
+  }
+
   .intro__title-line > span {
     display: block;
   }
 
   .intro__title-line > span + span {
     margin-left: 0;
+  }
+}
+
+@media (max-width: 639px) {
+  .archive-hero__description-break--mobile {
+    display: inline;
   }
 }
 

@@ -32,8 +32,8 @@ export function SiteFooter({ kineticsVariant }: SiteFooterProps) {
 
         <div className="site-footer__links">
           <Link href="/">楽曲制作</Link>
-          <Link href="/archive">歴代作品アーカイブ</Link>
-          <Link href="/contact">お問い合わせ</Link>
+          <Link href="/archive">歴代作品</Link>
+          <Link href="/contact">お問合せ</Link>
         </div>
       </div>
       <div className="site-footer__base">

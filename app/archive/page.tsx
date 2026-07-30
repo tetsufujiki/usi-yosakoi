@@ -54,10 +54,12 @@ export default function ArchivePage() {
               </h1>
             </div>
             <div className="archive-hero__summary">
-              <p>
-                年度、チーム名、曲名から、
+              <p className="archive-hero__description">
+                <span>年度、チーム名、曲名から、</span>
+                <br className="archive-hero__description-break--mobile" />
+                <span>UNITED STUDIOの</span>
                 <br />
-                UNITED STUDIOのよさこい演舞楽曲を探せます。
+                <span>よさこい演舞楽曲を探せます。</span>
               </p>
               <dl>
                 <div>
