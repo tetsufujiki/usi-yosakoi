@@ -10,12 +10,14 @@ import { YosakoiThumbnail } from "./YosakoiThumbnail";
 type WorkCardProps = {
   work: YosakoiWork;
   isActive: boolean;
+  playbackMode: "inline" | "modal";
   onTogglePlayback: () => void;
 };
 
 export function WorkCard({
   work,
   isActive,
+  playbackMode,
   onTogglePlayback,
 }: WorkCardProps) {
   const accessibleTitle = `${work.teamName}「${work.workTitle ?? "演舞楽曲"}」`;
@@ -30,7 +32,7 @@ export function WorkCard({
   return (
     <article className="work-card">
       <div className="work-card__media">
-        {work.youtubeId && isActive ? (
+        {work.youtubeId && isActive && playbackMode === "inline" ? (
           <div
             className="work-card__player"
             id={`archive-player-${work.id}`}
@@ -60,6 +62,13 @@ export function WorkCard({
             onClick={onTogglePlayback}
             onKeyDown={handlePlaybackKeyDown}
             aria-label={`${accessibleTitle}をページ内で再生`}
+            aria-haspopup={playbackMode === "modal" ? "dialog" : undefined}
+            aria-expanded={playbackMode === "modal" ? isActive : undefined}
+            aria-controls={
+              playbackMode === "modal"
+                ? "archive-playback-dialog"
+                : `archive-player-${work.id}`
+            }
           >
             <YosakoiThumbnail work={work} />
           </button>

@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { YosakoiWork } from "@/data/yosakoi-works";
-import { sortWorksNewestFirst } from "@/lib/yosakoi";
+import {
+  getYoutubeEmbedUrl,
+  getYoutubeUrl,
+  sortWorksNewestFirst,
+} from "@/lib/yosakoi";
 import { WorkCard } from "./WorkCard";
 
 type ArchiveExplorerProps = {
@@ -41,6 +45,10 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
   const [visibleCount, setVisibleCount] = useState(initialYearCount);
   const [isInitialYearFocus, setIsInitialYearFocus] = useState(true);
   const [activeWorkId, setActiveWorkId] = useState<string | null>(null);
+  const [isMobilePlayback, setIsMobilePlayback] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const modalCloseRef = useRef<HTMLButtonElement>(null);
+  const playbackTriggerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 720px)");
@@ -56,6 +64,18 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
     media.addEventListener("change", updatePageSize);
     return () => media.removeEventListener("change", updatePageSize);
   }, [initialYearCount]);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 639px)");
+    const updatePlaybackMode = () => {
+      setIsMobilePlayback(media.matches);
+      setActiveWorkId(null);
+    };
+
+    updatePlaybackMode();
+    media.addEventListener("change", updatePlaybackMode);
+    return () => media.removeEventListener("change", updatePlaybackMode);
+  }, []);
 
   const teams = useMemo(
     () =>
@@ -107,6 +127,65 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
     isInitialYearFocus && !hasFilters
       ? initialYearWorks.length < filteredWorks.length
       : visibleCount < filteredWorks.length;
+  const activeWork = useMemo(
+    () => sortedWorks.find((work) => work.id === activeWorkId) ?? null,
+    [activeWorkId, sortedWorks],
+  );
+
+  function closePlayback({ restoreFocus = true } = {}) {
+    setActiveWorkId(null);
+    if (restoreFocus) {
+      window.requestAnimationFrame(() => playbackTriggerRef.current?.focus());
+    }
+  }
+
+  function togglePlayback(workId: string) {
+    if (activeWorkId === workId) {
+      closePlayback();
+      return;
+    }
+
+    playbackTriggerRef.current = document.activeElement as HTMLElement | null;
+    setActiveWorkId(workId);
+  }
+
+  useEffect(() => {
+    if (isMobilePlayback || !activeWorkId) return;
+
+    modalCloseRef.current?.focus();
+
+    function handleModalKeyDown(event: globalThis.KeyboardEvent) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closePlayback();
+        return;
+      }
+
+      if (event.key !== "Tab" || !modalRef.current) return;
+
+      const focusable = Array.from(
+        modalRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), a[href], iframe, [tabindex]:not([tabindex="-1"])',
+        ),
+      );
+      const first = focusable[0];
+      const last = focusable.at(-1);
+
+      if (!first || !last) return;
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleModalKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleModalKeyDown);
+    };
+  }, [activeWorkId, isMobilePlayback]);
 
   function resetFilters() {
     setQuery("");
@@ -251,11 +330,8 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
             <WorkCard
               work={work}
               isActive={activeWorkId === work.id}
-              onTogglePlayback={() =>
-                setActiveWorkId((currentId) =>
-                  currentId === work.id ? null : work.id,
-                )
-              }
+              playbackMode={isMobilePlayback ? "inline" : "modal"}
+              onTogglePlayback={() => togglePlayback(work.id)}
               key={work.id}
             />
           ))}
@@ -288,6 +364,58 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
               {visibleWorks.length} / {filteredWorks.length}
             </span>
           </button>
+        </div>
+      ) : null}
+
+      {!isMobilePlayback && activeWork?.youtubeId ? (
+        <div
+          className="archive-player-modal"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) closePlayback();
+          }}
+        >
+          <div
+            className="archive-player-modal__dialog"
+            id="archive-playback-dialog"
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="archive-playback-title"
+          >
+            <button
+              className="archive-player-modal__close"
+              ref={modalCloseRef}
+              type="button"
+              onClick={() => closePlayback()}
+              aria-label={`${activeWork.teamName}「${activeWork.workTitle ?? "演舞楽曲"}」の再生を閉じる`}
+            >
+              <span aria-hidden="true">×</span>
+              閉じる
+            </button>
+            <div className="archive-player-modal__video">
+              <iframe
+                src={getYoutubeEmbedUrl(activeWork.youtubeId, true)}
+                title={`${activeWork.teamName}「${activeWork.workTitle ?? "演舞楽曲"}」を再生`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
+            <div className="archive-player-modal__copy">
+              <div>
+                <p>{activeWork.teamName}</p>
+                <h2 id="archive-playback-title">
+                  {activeWork.workTitle ?? "演舞楽曲"}
+                </h2>
+              </div>
+              <a
+                href={getYoutubeUrl(activeWork.youtubeId)}
+                target="_blank"
+                rel="noreferrer"
+              >
+                YouTubeで見る ↗
+              </a>
+            </div>
+          </div>
         </div>
       ) : null}
     </div>
