@@ -2909,9 +2909,9 @@ body:has(.archive-player-modal) {
   }
 
   .contact-form-section__description {
-    font-size: clamp(0.65rem, 2.8vw, 0.75rem);
-    letter-spacing: -0.105em;
-    line-height: 1.95;
+    font-size: clamp(0.75rem, 3.4vw, 0.875rem);
+    letter-spacing: -0.155em;
+    line-height: 2;
   }
 
   .contact-form-section__description span {
