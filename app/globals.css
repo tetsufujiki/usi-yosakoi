@@ -3221,8 +3221,37 @@ body::before {
 
 .our-process {
   background:
-    linear-gradient(90deg, transparent 0 74%, rgba(183, 21, 50, 0.055) 74%),
+    radial-gradient(circle at 8% 90%, rgba(183, 21, 50, 0.055), transparent 28rem),
     var(--color-paper);
+}
+
+.our-process::after {
+  position: absolute;
+  top: 5%;
+  right: 0;
+  bottom: 4%;
+  width: clamp(4.5rem, 18vw, 18rem);
+  z-index: 0;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(217, 47, 61, 0.035) 12%,
+    rgba(217, 47, 61, 0.095) 42%,
+    rgba(240, 173, 61, 0.055) 68%,
+    transparent 100%
+  );
+  border-left: 1px solid rgba(183, 21, 50, 0.055);
+  mix-blend-mode: multiply;
+}
+
+.finishing-process__item {
+  background: color-mix(in srgb, var(--color-paper) 96%, var(--color-warm) 4%);
+}
+
+.finishing-process__item--mastering {
+  background: color-mix(in srgb, var(--color-paper) 95%, var(--color-sun) 5%);
 }
 
 .journey {
@@ -3388,6 +3417,18 @@ body::before {
   background: var(--color-paper);
 }
 
+.contact-form-section__heading {
+  max-width: none;
+}
+
+.contact-form-section__heading h2 {
+  width: fit-content;
+  max-width: 100%;
+  font-size: clamp(1.9rem, 7.5vw, 6.4rem);
+  letter-spacing: -0.075em;
+  white-space: nowrap;
+}
+
 .contact-form {
   border-top-color: var(--color-warm);
 }
@@ -3412,12 +3453,44 @@ body::before {
 }
 
 .contact-form__submit {
-  background: var(--color-warm);
+  position: relative;
+  max-width: none;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border-top: 0;
+  background:
+    linear-gradient(135deg, rgba(217, 47, 61, 0.2), transparent 58%),
+    var(--color-night);
   color: var(--color-cream);
 }
 
-.contact-form__submit:hover:not(:disabled) {
-  background: var(--color-tide);
+.contact-form__submit > p {
+  max-width: 48rem;
+  color: rgba(255, 246, 226, 0.84);
+  font-size: 0.8rem;
+  line-height: 1.85;
+}
+
+.contact-form__submit button {
+  border-color: var(--color-sun);
+  background: var(--color-sun);
+  color: var(--color-night);
+}
+
+.contact-form__submit button:hover:not(:disabled),
+.contact-form__submit button:focus-visible {
+  border-color: var(--color-cream);
+  background: var(--color-cream);
+  color: var(--color-night);
+  outline: 3px solid rgba(240, 173, 61, 0.42);
+  outline-offset: 3px;
+}
+
+.contact-form__submit .contact-form__status p {
+  color: rgba(255, 246, 226, 0.82);
+}
+
+.contact-form__submit .contact-form__message p:first-child {
+  color: var(--color-cream);
 }
 
 .contact-form__status--success {
