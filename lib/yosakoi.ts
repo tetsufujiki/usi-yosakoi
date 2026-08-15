@@ -2,47 +2,30 @@ import type { CSSProperties } from "react";
 import type { YosakoiWork } from "@/data/yosakoi-works";
 
 const yearPalettes = [
-  {
-    deep: "#2E222B",
-    mid: "#653F44",
-    accent: "#C76B52",
-    accentSoft: "rgba(199, 107, 82, 0.34)",
-    light: "#E0B183",
-    ink: "#FFF7EA",
-  },
-  {
-    deep: "#2D2A22",
-    mid: "#5F513C",
-    accent: "#C08C4C",
-    accentSoft: "rgba(192, 140, 76, 0.33)",
-    light: "#E0C07E",
-    ink: "#FFF8E9",
-  },
-  {
-    deep: "#1C2B44",
-    mid: "#3C5A82",
-    accent: "#6E94CB",
-    accentSoft: "rgba(110, 148, 203, 0.34)",
-    light: "#B5C9E2",
-    ink: "#F9F7ED",
-  },
-  {
-    deep: "#18313D",
-    mid: "#2D5E6E",
-    accent: "#57A2B5",
-    accentSoft: "rgba(87, 162, 181, 0.33)",
-    light: "#AFD2DB",
-    ink: "#F9F7EA",
-  },
-  {
-    deep: "#2B273E",
-    mid: "#524A78",
-    accent: "#8B7FB3",
-    accentSoft: "rgba(139, 127, 179, 0.34)",
-    light: "#C6BCDC",
-    ink: "#FFF7EA",
-  },
-] as const;
+  { deep: "#26070D", mid: "#681524", accent: "#D92F3D", light: "#F0AD3D" },
+  { deep: "#171E36", mid: "#293F72", accent: "#5C81C7", light: "#D8B96A" },
+  { deep: "#132B2A", mid: "#235A50", accent: "#4D9A7E", light: "#E0B85C" },
+  { deep: "#32150D", mid: "#78321E", accent: "#D46535", light: "#F1BA5B" },
+  { deep: "#251126", mid: "#59305F", accent: "#9A5795", light: "#E1A86B" },
+  { deep: "#15262E", mid: "#285769", accent: "#4F91A5", light: "#E5B85D" },
+  { deep: "#2D1020", mid: "#6D2147", accent: "#C04473", light: "#F09B69" },
+  { deep: "#22270F", mid: "#526226", accent: "#8A9D42", light: "#E7BB5B" },
+  { deep: "#20172F", mid: "#47366E", accent: "#7963AA", light: "#DDB272" },
+  { deep: "#31200B", mid: "#765018", accent: "#C78C2D", light: "#F0C669" },
+  { deep: "#102A32", mid: "#1F6170", accent: "#3C9CAF", light: "#E6B75E" },
+  { deep: "#321217", mid: "#792931", accent: "#C64B50", light: "#EAB267" },
+  { deep: "#182616", mid: "#365D32", accent: "#65945A", light: "#DDB75D" },
+  { deep: "#191D32", mid: "#394675", accent: "#687DB5", light: "#E4B767" },
+  { deep: "#301126", mid: "#702A59", accent: "#B94F89", light: "#E5AA67" },
+  { deep: "#292014", mid: "#66502A", accent: "#AA8541", light: "#EBC36A" },
+  { deep: "#122929", mid: "#2D6260", accent: "#579894", light: "#DFB866" },
+  { deep: "#2E1510", mid: "#70402B", accent: "#B96843", light: "#E9B56A" },
+  { deep: "#22152D", mid: "#52366C", accent: "#8663A2", light: "#DDB475" },
+].map((palette) => ({
+  ...palette,
+  accentSoft: `color-mix(in srgb, ${palette.accent} 36%, transparent)`,
+  ink: "#FFF6E2",
+}));
 
 const thumbnailVariants = ["formation", "surge", "pulse", "flow"] as const;
 
@@ -81,10 +64,12 @@ export function getThumbnailTheme(work: YosakoiWork) {
     work.thumbnailVariant ??
     thumbnailVariants[teamHash % thumbnailVariants.length];
   const angle = 16 + (teamHash % 34);
+  const toneShift = 5 + ((teamHash >>> 6) % 11);
+  const teamAccent = work.accentColor ?? palette.accent;
   const style: ThumbnailStyle = {
     "--thumb-deep": palette.deep,
-    "--thumb-mid": palette.mid,
-    "--thumb-accent": work.accentColor ?? palette.accent,
+    "--thumb-mid": `color-mix(in srgb, ${palette.mid} ${100 - toneShift}%, ${teamAccent})`,
+    "--thumb-accent": teamAccent,
     "--thumb-accent-soft": palette.accentSoft,
     "--thumb-light": palette.light,
     "--thumb-ink": palette.ink,
