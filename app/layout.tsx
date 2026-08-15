@@ -65,7 +65,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
+    <html lang="ja" className="bg-background">
       <body>
         <a className="skip-link" href="#main-content">
           本文へ移動

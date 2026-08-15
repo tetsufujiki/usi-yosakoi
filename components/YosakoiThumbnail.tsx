@@ -72,7 +72,6 @@ export function YosakoiThumbnail({
       {showYoutubeLabel && work.youtubeId ? (
         <span className="work-thumbnail__youtube">
           <span className="play-mark" />
-          Play
         </span>
       ) : null}
     </div>
