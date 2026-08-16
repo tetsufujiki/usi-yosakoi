@@ -29,6 +29,44 @@ const yearPalettes = [
 
 const thumbnailVariants = ["formation", "surge", "pulse", "flow"] as const;
 
+export const ARCHIVE_TEAM_ORDER = [
+  "ゐちぺぃじ", "お喜楽家", "花鶴風月", "妃龍", "早稲田大学 下駄っぱーず",
+  "國士舞双", "咲くやこの花", "さぬき一丁目一番地", "柳葉魚のざわめき", "時遊",
+  "ぞっこん町田 ’98", "高松よさこい連", "千葉工業大学 風神", "絆葵", "東海大学 響",
+  "同志社大学 よさ朗", "華舞鬼蜂", "浜っ鼓★弾★DAN", "関西大学 飛舞人", "百物語",
+  "北里三陸湧昇龍", "関東学院大学 誇咲", "祭三代・IKU!", "祭や倶楽部", "檮原",
+  "凛轟", "早稲田大学 踊り侍", "早稲田大学 東京花火",
+] as const;
+
+const archiveTeamOrderIndex = new Map<string, number>(
+  ARCHIVE_TEAM_ORDER.map((teamName, index) => [teamName, index]),
+);
+
+const archiveTeamAbbreviations: Readonly<Record<string, string>> = {
+  "お喜楽家": "OKIRAKUYA", "さぬき一丁目一番地": "ICCHOME", "ぞっこん町田 ’98": "ZOKKON",
+  "ゐちぺぃじ": "ICHIPAGE", "花鶴風月": "KACHOFUGETSU", "華舞鬼蜂": "ONIBACHI",
+  "関西大学 飛舞人": "HIMABITO", "関東学院大学 誇咲": "HOKOSAKI", "高松よさこい連": "TAKAMATSU",
+  "祭や倶楽部": "MATSURIYA", "祭三代・IKU!": "IKU", "咲くやこの花": "KONOHANA",
+  "時遊": "JIYU", "千葉工業大学 風神": "FUJIN", "早稲田大学 下駄っぱーず": "GETA",
+  "早稲田大学 東京花火": "HANABI", "早稲田大学 踊り侍": "SAMURAI", "東海大学 響": "HIBIKI",
+  "同志社大学 よさ朗": "YOSAROU", "妃龍": "KIRYU", "百物語": "HYAKU",
+  "浜っ鼓★弾★DAN": "HAMAKKO", "北里三陸湧昇龍": "YUSYORYU", "柳葉魚のざわめき": "SHISHAMEKI",
+  "凛轟": "RINGOW", "國士舞双": "KOKUSHI", "檮原": "YUSUHARA", "絆葵": "TSUNAGI",
+};
+
+export function compareArchiveTeamNames(a: string, b: string) {
+  const fallbackIndex = ARCHIVE_TEAM_ORDER.length;
+  const orderDifference =
+    (archiveTeamOrderIndex.get(a) ?? fallbackIndex) -
+    (archiveTeamOrderIndex.get(b) ?? fallbackIndex);
+
+  return orderDifference || a.localeCompare(b, "ja");
+}
+
+export function getArchiveTeamAbbreviation(teamName: string) {
+  return archiveTeamAbbreviations[teamName];
+}
+
 export type ThumbnailStyle = CSSProperties & {
   "--thumb-deep": string;
   "--thumb-mid": string;
@@ -138,6 +176,9 @@ export function sortWorksNewestFirst(works: YosakoiWork[]) {
   return [...works].sort((a, b) => {
     const yearDifference = Math.max(...b.years) - Math.max(...a.years);
     if (yearDifference !== 0) return yearDifference;
+
+    const teamDifference = compareArchiveTeamNames(a.teamName, b.teamName);
+    if (teamDifference !== 0) return teamDifference;
 
     return (a.order ?? 999) - (b.order ?? 999);
   });
