@@ -1083,7 +1083,7 @@ button:disabled {
   z-index: 0;
   background:
     linear-gradient(rgba(12, 10, 10, 0.08), rgba(12, 10, 10, 0.14)),
-    url("https://i.ytimg.com/vi/oo0WJ85gE4o/maxresdefault.jpg") center / cover no-repeat;
+    url("https://i.ytimg.com/vi/RQyDJsJmaIg/maxresdefault.jpg") center / cover no-repeat;
   filter: saturate(0.96) contrast(1.04) brightness(0.84);
   transform: translate(-50%, -50%) scale(1.025);
 }

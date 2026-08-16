@@ -87,7 +87,7 @@ const process = [
 const journeyWorkSelections = [
   { id: "work-120774", displayTitle: "暁-AKATSUKI-" },
   { id: "work-120605", displayTitle: "はりまや橋で会いましょう" },
-  { id: "work-119035", displayTitle: "HOTAERU" },
+  { id: "work-120108", displayTitle: "感謝感激雨あられ" },
   { id: "work-119656", displayTitle: "土佐より" },
 ] as const;
 
@@ -348,7 +348,7 @@ export default function Home() {
                 </p>
               </JourneyVideoBackground>
               <p className="journey-video__caption">
-                國士舞双2023「感謝感激雨あられ」　第70回高知よさこい祭り
+                國士舞双「HOTAERU」　よさこい鳴子踊り特別演舞
               </p>
               <div className="journey__epilogue">
                 <p className="journey__closing">
