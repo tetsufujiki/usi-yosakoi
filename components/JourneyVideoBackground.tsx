@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 
-const videoId = "oo0WJ85gE4o";
+const videoId = "RQyDJsJmaIg";
 const embedUrl =
   `https://www.youtube-nocookie.com/embed/${videoId}` +
   `?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${videoId}` +
