@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { YosakoiWork } from "@/data/yosakoi-works";
 import {
+  compareArchiveTeamNames,
   getYoutubeEmbedUrl,
   getYoutubeUrl,
   sortWorksNewestFirst,
@@ -81,7 +82,7 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
     () =>
       [...new Map(works.map((work) => [work.teamId, work.teamName]))]
         .map(([id, name]) => ({ id, name }))
-        .sort((a, b) => a.name.localeCompare(b.name, "ja")),
+        .sort((a, b) => compareArchiveTeamNames(a.name, b.name)),
     [works],
   );
 

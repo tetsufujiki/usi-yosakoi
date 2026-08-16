@@ -217,7 +217,7 @@ export default function Home() {
               <div className="intro__note">
                 <span>THE QUESTION</span>
                 <strong>
-                  <span>自分たちのチーム</span>
+                  <span>自分たち���チーム</span>
                   <span>なら、どんな曲に</span>
                   <span>なるだろう。</span>
                 </strong>
@@ -305,9 +305,15 @@ export default function Home() {
                 <div>
                   <p className="section-label">OUR JOURNEY</p>
                   <h2 id="journey-title">
-                    <span>國士舞双</span>
-                    <span>と、音楽を</span>
-                    <span>重ねて</span>
+                    <span className="journey__title--desktop">
+                      <span>國士舞双</span>
+                      <span>と、音楽を</span>
+                      <span>重ねて</span>
+                    </span>
+                    <span className="journey__title--mobile">
+                      <span>國士舞双と、</span>
+                      <span>音楽を重ねて</span>
+                    </span>
                   </h2>
                   <p className="journey__meta">國士舞双 : 高知県・東京都</p>
                 </div>
