@@ -1,6 +1,10 @@
 import Image from "next/image";
 import type { YosakoiWork } from "@/data/yosakoi-works";
-import { formatYears, getThumbnailTheme } from "@/lib/yosakoi";
+import {
+  formatYears,
+  getArchiveTeamAbbreviation,
+  getThumbnailTheme,
+} from "@/lib/yosakoi";
 
 type YosakoiThumbnailProps = {
   work: YosakoiWork;
@@ -26,6 +30,7 @@ export function YosakoiThumbnail({
   priority = false,
 }: YosakoiThumbnailProps) {
   const { variant, style } = getThumbnailTheme(work);
+  const teamAbbreviation = getArchiveTeamAbbreviation(work.teamName);
   const teamSize = getTextSize(work.teamName, 7, 11);
   const titleSize = work.workTitle
     ? getTextSize(work.workTitle, 11, 17)
@@ -58,6 +63,9 @@ export function YosakoiThumbnail({
       <span className="work-thumbnail__pattern work-thumbnail__pattern--one" />
       <span className="work-thumbnail__pattern work-thumbnail__pattern--two" />
       <span className="work-thumbnail__trace" />
+      {teamAbbreviation ? (
+        <span className="work-thumbnail__abbreviation">{teamAbbreviation}</span>
+      ) : null}
 
       <div className="work-thumbnail__content">
         <p className="work-thumbnail__year">{formatYears(work.years)}</p>
@@ -72,7 +80,6 @@ export function YosakoiThumbnail({
       {showYoutubeLabel && work.youtubeId ? (
         <span className="work-thumbnail__youtube">
           <span className="play-mark" />
-          Play
         </span>
       ) : null}
     </div>

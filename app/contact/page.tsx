@@ -80,7 +80,7 @@ export default function ContactPage() {
               <div className="contact-form-section__heading">
                 <p className="section-label">TELL US ABOUT THE PERFORMANCE</p>
                 <h2 id="contact-form-title">制作希望の内容を送る</h2>
-                <p className="contact-form-section__description">
+                <p className="contact-form-section__description contact-form-section__description--desktop">
                   <span>
                     制作時期や対応可否を判断するため、演舞予定時期、音源が必要となる時期、
                   </span>
@@ -90,6 +90,9 @@ export default function ContactPage() {
                   <span>
                     未定の項目は、現段階での予定やご希望をお知らせください。
                   </span>
+                </p>
+                <p className="contact-form-section__description contact-form-section__description--mobile">
+                  制作時期や対応可否を判断するため、演舞予定時期、音源が必要となる時期、制作内容、チームや演舞のイメージなどを、できるだけ具体的にご記入ください。未定の項目は、現段階での予定やご希望をお知らせください。
                 </p>
               </div>
               <ContactForm />

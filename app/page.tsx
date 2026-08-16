@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { JourneyVideoBackground } from "@/components/JourneyVideoBackground";
 import { SelectedWorks } from "@/components/SelectedWorks";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -331,24 +332,32 @@ export default function Home() {
             </div>
 
             <div className="journey__story">
-              <p className="journey__lead">
-                よさこい祭りと関わり始めたのは、2008年のことです。
+              <JourneyVideoBackground>
+                <h3 className="journey__lead">
+                  <span>よさこい祭りと関わり始めたのは、</span>
+                  <span>2008年のことです。</span>
+                </h3>
+                <p>
+                  きっかけは、高知と関東の合同チーム「國士舞双」を立ち上げられた、やんちゃ本舗様との出会いでした。「この国に二つと無いものを」というチームコンセプトを伺い、それならばと、毎年知恵をしぼりながら音楽をつくり続けること5年。2012年、高知よさこい祭り全国大会・後夜祭における「武政英策賞※」の受賞は、それまで重ねてきた一つひとつが、最高の結果となって表れた瞬間でした。
+                </p>
+                <p>
+                  よさこい工房祭彩様とのタッグも年を重ねるごとに深まり、音楽と演舞を含めた作品全体の完成度も、より高いものへと育ってきました。
+                </p>
+                <p>
+                  そして國士舞双は、2026年に結成20周年を迎えました。これから先も、高知よさこい界の風雲児として突き進んでいくその歩みを、音楽で支え続けられることを楽しみにしています。
+                </p>
+              </JourneyVideoBackground>
+              <p className="journey-video__caption">
+                國士舞双2023「感謝感激雨あられ」　第70回高知よさこい祭り
               </p>
-              <p>
-                きっかけは、高知と関東の合同チーム「國士舞双」を立ち上げられた、やんちゃ本舗様との出会いでした。「この国に二つと無いものを」というチームコンセプトを伺い、それならばと、毎年知恵をしぼりながら音楽をつくり続けること5年。2012年、高知よさこい祭り全国大会・後夜祭における「武政英策賞※」の受賞は、それまで重ねてきた一つひとつが、最高の結果となって表れた瞬間でした。
-              </p>
-              <p>
-                よさこい工房祭彩様とのタッグも年を重ねるごとに深まり、音楽と演舞を含めた作品全体の完成度も、より高いものへと育ってきました。
-              </p>
-              <p>
-                そして國士舞双は、2026年に結成20周年を迎えました。これから先も、高知よさこい界の風雲児として突き進んでいくその歩みを、音楽で支え続けられることを楽しみにしています。
-              </p>
-              <p className="journey__closing">
-                よさこいは、その地域を彩る「お祭り」です。毎年訪れる熱い夏と、全国各地で出会う皆さまの笑顔を楽しみに、これからも制作を重ねてまいります。
-              </p>
-              <p className="journey__footnote">
-                ※高知よさこい祭り本祭の入賞チームの中から、毎年1チームのみが選ばれる栄誉賞
-              </p>
+              <div className="journey__epilogue">
+                <p className="journey__closing">
+                  よさこいは、その地域を彩る「お祭り」です。毎年訪れる熱い夏と、全国各地で出会う皆さまの笑顔を楽しみに、これからも制作を重ねてまいります。
+                </p>
+                <p className="journey__footnote">
+                  ※高知よさこい祭り本祭の入賞チームの中から、毎年1チームのみが選ばれる栄誉賞
+                </p>
+              </div>
             </div>
           </div>
         </section>
