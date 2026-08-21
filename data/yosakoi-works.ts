@@ -25,6 +25,30 @@ export type YosakoiWork = {
  */
 export const allYosakoiWorks: YosakoiWork[] = [
   {
+    id: "2026-hanamaionibachi-uchotengai",
+    years: [2026],
+    teamId: "hanamaionibachi",
+    teamName: "華舞鬼蜂",
+    workTitle: "よさこい歌舞伎『有頂天外』",
+    youtubeId: "ZvMhYsLKCYI",
+  },
+  {
+    id: "2026-kokushi-takarabune",
+    years: [2026],
+    teamId: "kokushi",
+    teamName: "國士舞双",
+    workTitle: "宝船",
+    youtubeId: "YA9ouGgAiak",
+  },
+  {
+    id: "2026-shishameki-darega-darewo-odoru",
+    years: [2026],
+    teamId: "shishameki",
+    teamName: "柳葉魚のざわめき",
+    workTitle: "誰が誰を踊る",
+    youtubeId: "dTbY0VHjfPo",
+  },
+  {
     id: "work-120914",
     years: [2025],
     teamId: "takamatsuyosakoiren",
