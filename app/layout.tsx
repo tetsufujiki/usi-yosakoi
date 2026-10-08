@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { SiteAnalytics } from "@/components/site-analytics";
 import { ogImageUrl, siteDescription, siteTitle, siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -67,6 +68,7 @@ export default function RootLayout({
   return (
     <html lang="ja" className="bg-background">
       <body>
+        <SiteAnalytics />
         <a className="skip-link" href="#main-content">
           本文へ移動
         </a>
