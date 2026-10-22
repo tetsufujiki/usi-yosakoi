@@ -8,7 +8,7 @@ export function SiteAnalytics() {
   return (
     <Script id="usi-ga4" strategy="afterInteractive">
       {`(function(){
-        if (window.location.hostname !== "yosakoi.united-studio.com") return;
+        if (!window.__usiAnalyticsAllowed || !window.__usiAnalyticsAllowed()) return;
         window.dataLayer = window.dataLayer || [];
         function gtag(){window.dataLayer.push(arguments);}
         gtag('js', new Date());

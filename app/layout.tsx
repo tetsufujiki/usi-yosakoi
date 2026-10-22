@@ -1,3 +1,4 @@
+import { AnalyticsJourney } from '@/components/analytics-journey'
 import type { Metadata } from "next";
 import "./globals.css";
 import { SiteAnalytics } from "@/components/site-analytics";
@@ -68,6 +69,7 @@ export default function RootLayout({
   return (
     <html lang="ja" className="bg-background">
       <body>
+        <AnalyticsJourney />
         <SiteAnalytics />
         <a className="skip-link" href="#main-content">
           本文へ移動
