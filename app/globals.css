@@ -5036,10 +5036,8 @@ button.text-link {
   box-shadow: 0 1px 0 var(--color-warm);
 }
 
-.explorer__search-field > span {
+.explorer__search-field > svg {
   color: var(--color-tide);
-  font-size: 1.3rem;
-  line-height: 1;
 }
 
 .explorer__search-field input {

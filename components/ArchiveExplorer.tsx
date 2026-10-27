@@ -407,7 +407,19 @@ export function ArchiveExplorer({ works, teams, years }: ArchiveExplorerProps) {
         <div className="explorer__search" role="search">
           <label htmlFor="archive-query">チーム名・曲名・年度で探す</label>
           <div className="explorer__search-field">
-            <span aria-hidden="true">⌕</span>
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            >
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <path d="m15.5 15.5 5 5" />
+            </svg>
             <input
               id="archive-query"
               type="search"
