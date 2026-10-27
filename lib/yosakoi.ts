@@ -172,7 +172,7 @@ export function getYoutubeEmbedUrl(youtubeId: string, autoplay = false) {
   return `https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0${playbackParameters}`;
 }
 
-export function sortWorksNewestFirst(works: YosakoiWork[]) {
+export function sortWorksNewestFirst<T extends YosakoiWork>(works: T[]): T[] {
   return [...works].sort((a, b) => {
     const yearDifference = Math.max(...b.years) - Math.max(...a.years);
     if (yearDifference !== 0) return yearDifference;
