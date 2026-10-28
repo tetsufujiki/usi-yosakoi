@@ -103,7 +103,7 @@ function OrbitStage({ works, background = false, activeId, open }: {
         motion.velocity *= Math.pow(0.94, dt / 16);
         moving = true;
       } else if (!paused && !motion.dragging && !motion.hovering && !motion.focusing) {
-        motion.angle -= dt * (background ? 0.001 : 0.0025);
+        motion.angle += dt * (background ? 0.001 : -0.0025);
         moving = true;
       }
       draw();
