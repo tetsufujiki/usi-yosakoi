@@ -5356,13 +5356,14 @@ button.text-link {
 }
 
 /* Acknowledgement stays in view until explicitly dismissed. */
-.contact-success-dialog { position: fixed; inset: 0; margin: auto; width: min(36rem, calc(100% - 2rem)); max-height: calc(100dvh - 2rem); overflow: auto; padding: clamp(2rem, 6vw, 4rem); border: 1px solid #111; background: #fff; color: #111; text-align: center; box-shadow: 0 24px 100px #0004; }
-.contact-success-dialog::backdrop { background: #0009; }
-.contact-success-dialog__check { display: block; margin-bottom: 1.5rem; color: #d90000; font-size: 2.5rem; }
-.contact-success-dialog h2 { margin: 0; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.5; }
-.contact-success-dialog p { margin: 1.5rem 0 2rem; font-size: 1rem; line-height: 1.9; }
-.contact-success-dialog button { min-height: 48px; width: 100%; padding: 0.8rem 1.5rem; border: 1px solid #111; background: #111; color: #fff; font-size: 1rem; cursor: pointer; }
-.contact-success-dialog button:focus-visible { outline: 3px solid #d90000; outline-offset: 4px; }
+.studio .contact-success-dialog { position: fixed; inset: 0; margin: auto; width: min(30rem, calc(100% - 2.5rem)); max-height: calc(100dvh - 2.5rem); overflow: auto; padding: clamp(28px, 6vw, 48px); border: 0; border-top: 3px solid #111; background: #fff; color: #111; text-align: left; box-shadow: 0 20px 80px #0002; }
+.contact-success-dialog::backdrop { background: #0006; }
+.studio .contact-success-dialog__check { display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; margin: 0 0 22px; border: 1px solid #ccc; border-radius: 50%; color: #111; font: 18px/1 Arial, sans-serif; }
+.studio .contact-success-dialog h2 { margin: 0; font-family: var(--mincho); font-size: clamp(24px, 3.5vw, 30px); font-weight: 400; letter-spacing: .02em; line-height: 1.65; }
+.studio .contact-success-dialog p { margin: 18px 0 30px; color: #555; font-size: 14px; font-feature-settings: normal; letter-spacing: .02em; line-height: 1.9; }
+.studio .contact-success-dialog button { display: block; min-height: 44px; width: auto; margin: 0 0 0 auto; padding: 10px 24px; border: 1px solid #bbb; background: #fff; color: #111; font-size: 14px; font-weight: 500; cursor: pointer; }
+.studio .contact-success-dialog button:hover { background: #f4f4f4; border-color: #111; }
+.studio .contact-success-dialog button:focus-visible { outline: 2px solid #555; outline-offset: 4px; }
 
 .studio .studio-contact-motion { position: relative; isolation: isolate; overflow: hidden; background: #330b13; color: #fff; }
 .studio-contact-motion > .kinetics-canvas { z-index: -1; opacity: .95; }
