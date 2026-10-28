@@ -10,6 +10,8 @@ export type YosakoiTeam = {
  * rejects unknown IDs and mismatched names to prevent spelling drift.
  */
 export const yosakoiTeams: YosakoiTeam[] = [
+  { id: "hozuki", name: "兵庫教育大学よさこい部 チーム鬼灯" },
+  { id: "kotobukiza", name: "寿座" },
   { id: "chibako-fujin", name: "千葉工業大学 風神" },
   { id: "geta", name: "早稲田大学 下駄っぱーず" },
   { id: "hamakkodandan", name: "浜っ鼓★弾★DAN" },
