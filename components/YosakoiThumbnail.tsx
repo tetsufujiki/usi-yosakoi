@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { YosakoiWork } from "@/data/yosakoi-works";
+import type { TeamMarkAsset } from "@/lib/team-marks";
 import {
   formatYears,
   getArchiveTeamAbbreviation,
@@ -8,6 +9,10 @@ import {
 
 type YosakoiThumbnailProps = {
   work: YosakoiWork;
+  /** Official team name to display; defaults to the archive name. */
+  teamLabel?: string;
+  /** White mark shown in place of the abbreviation watermark. */
+  mark?: TeamMarkAsset;
   showYoutubeLabel?: boolean;
   priority?: boolean;
 };
@@ -26,12 +31,16 @@ function getTextSize(value: string, mediumAt: number, longAt: number) {
 
 export function YosakoiThumbnail({
   work,
+  teamLabel = work.teamName,
+  mark,
   showYoutubeLabel = true,
   priority = false,
 }: YosakoiThumbnailProps) {
   const { variant, style } = getThumbnailTheme(work);
-  const teamAbbreviation = getArchiveTeamAbbreviation(work.teamName);
-  const teamSize = getTextSize(work.teamName, 7, 11);
+  const teamAbbreviation = mark
+    ? undefined
+    : getArchiveTeamAbbreviation(work.teamName);
+  const teamSize = getTextSize(teamLabel, 7, 11);
   const titleSize = work.workTitle
     ? getTextSize(work.workTitle, 11, 17)
     : "none";
@@ -46,6 +55,7 @@ export function YosakoiThumbnail({
       data-title-size={titleSize}
       data-density={isDense ? "dense" : "standard"}
       data-has-title={work.workTitle ? "true" : "false"}
+      data-has-mark={mark ? "true" : "false"}
       style={style}
       aria-hidden="true"
     >
@@ -63,6 +73,17 @@ export function YosakoiThumbnail({
       <span className="work-thumbnail__pattern work-thumbnail__pattern--one" />
       <span className="work-thumbnail__pattern work-thumbnail__pattern--two" />
       <span className="work-thumbnail__trace" />
+      {mark ? (
+        <Image
+          className="work-thumbnail__mark"
+          src={mark.white}
+          alt=""
+          width={160}
+          height={160}
+          unoptimized
+          draggable={false}
+        />
+      ) : null}
       {teamAbbreviation ? (
         <span className="work-thumbnail__abbreviation">{teamAbbreviation}</span>
       ) : null}
@@ -70,7 +91,7 @@ export function YosakoiThumbnail({
       <div className="work-thumbnail__content">
         <p className="work-thumbnail__year">{formatYears(work.years)}</p>
         <div>
-          <p className="work-thumbnail__team">{work.teamName}</p>
+          <p className="work-thumbnail__team">{teamLabel}</p>
           {work.workTitle ? (
             <p className="work-thumbnail__title">「{work.workTitle}」</p>
           ) : null}

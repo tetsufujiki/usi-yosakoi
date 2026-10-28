@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/ContactForm";
-import { SiteFooter } from "@/components/SiteFooter";
-import { SiteHeader } from "@/components/SiteHeader";
-import { YosakoiHeroKinetics } from "@/components/YosakoiHeroKinetics";
+import { StudioShell } from "@/components/studio/StudioShell";
 
 export const metadata: Metadata = {
   title: {
@@ -16,91 +14,11 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
-  return (
-    <>
-      <SiteHeader />
-      <main id="main-content">
-        <div className="contact-motion-field">
-          <YosakoiHeroKinetics variant="contact" />
-          <section className="contact-hero" aria-labelledby="contact-title">
-            <div className="contact-hero__trace" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </div>
-            <div className="frame contact-hero__inner">
-              <div>
-                <p className="section-label">PRODUCTION INQUIRY</p>
-                <h1 id="contact-title" className="contact-hero__title">
-                  <span>制作をご検討</span>
-                  <span>中のチーム様</span>
-                </h1>
-              </div>
-              <div className="contact-hero__copy">
-                <p>
-                  よさこい楽曲制作は、チームのテーマ、演舞構成、制作時期、
-                  収録内容によって必要な工程が変わります。
-                </p>
-                <p>そのため、Web上で一律の料金表は掲載していません。</p>
-                <p>
-                  年間の制作スケジュールは、継続してご依頼いただいているチームの制作を中心に組んでいます。
-                  新規のご依頼については、制作時期や内容を確認し、
-                  可能な範囲で制作枠を調整しています。
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section className="contact-intro section">
-            <div className="frame contact-intro__inner">
-              <div className="contact-intro__lead">
-                <p>
-                  新規に制作をご依頼いただくチーム様は、ご希望の時期に対応できない場合もございますので、
-                  できるだけお早めにご相談ください。
-                </p>
-                <p>
-                  お問い合わせの際は、演舞の予定時期、音源が必要となる時期、
-                  制作をご希望の内容に加え、チームの活動状況・チームカラーなど、
-                  できるだけ詳しい情報をお知らせください。
-                </p>
-                <p>
-                  また、過去に制作をご依頼いただいたチーム様につきましても、
-                  年度や時期によっては対応が難しい場合がございます。
-                  継続しての制作をご検討の場合も、お早めにご相談いただくことをおすすめいたします。
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section
-            className="contact-form-section section"
-            aria-labelledby="contact-form-title"
-          >
-            <div className="frame contact-form-section__content">
-              <div className="contact-form-section__heading">
-                <p className="section-label">TELL US ABOUT THE PERFORMANCE</p>
-                <h2 id="contact-form-title">制作希望の内容を送る</h2>
-                <p className="contact-form-section__description contact-form-section__description--desktop">
-                  <span>
-                    制作時期や対応可否を判断するため、演舞予定時期、音源が必要となる時期、
-                  </span>
-                  <span>
-                    制作内容、チームや演舞のイメージなどを、できるだけ具体的にご記入ください。
-                  </span>
-                  <span>
-                    未定の項目は、現段階での予定やご希望をお知らせください。
-                  </span>
-                </p>
-                <p className="contact-form-section__description contact-form-section__description--mobile">
-                  制作時期や対応可否を判断するため、演舞予定時期、音源が必要となる時期、制作内容、チームや演舞のイメージなどを、できるだけ具体的にご記入ください。未定の項目は、現段階での予定やご希望をお知らせください。
-                </p>
-              </div>
-              <ContactForm />
-            </div>
-          </section>
-        </div>
-      </main>
-      <SiteFooter />
-    </>
-  );
+  return <StudioShell>
+    <section className="studio-document-head" aria-labelledby="contact-title"><p className="studio-section-label">制作の相談</p><h1 id="contact-title">次の演舞のことを、<br />聞かせてください。</h1><p>チームのテーマ、演舞の構想、ご希望の時期。現在決まっていることから、お聞かせください。</p></section>
+    <section className="studio-contact" aria-labelledby="contact-form-title">
+      <aside className="studio-contact__note"><h2>ご相談の前に</h2><p>年間の制作予定は、継続してご依頼いただいているチームを中心に組んでいます。新規のご依頼は、制作時期や内容を確認し、可能な範囲で制作枠を調整しています。</p><p>テーマや演舞構成、収録内容によって工程が変わるため、一律の料金表は掲載していません。</p><p>継続制作の場合も、年度や時期によって対応が難しいことがあります。ご希望の時期が決まっている場合は、お早めにご相談ください。</p><dl><div><dt>伝えていただきたいこと</dt><dd>演舞予定年度・音源が必要な時期</dd><dd>制作を希望する内容</dd><dd>チームの活動状況や演舞のイメージ</dd></div></dl><p className="studio-note">未定の項目は、現段階の予定やご希望をご記入ください。</p></aside>
+      <div className="studio-contact__form"><h2 id="contact-form-title">制作希望の内容</h2><ContactForm /></div>
+    </section>
+  </StudioShell>;
 }

@@ -1,4 +1,5 @@
-import { AnalyticsJourney } from '@/components/analytics-journey'
+import Script from "next/script";
+import { journeyScript } from "@/lib/analytics-journey";
 import type { Metadata } from "next";
 import "./globals.css";
 import { SiteAnalytics } from "@/components/site-analytics";
@@ -69,7 +70,9 @@ export default function RootLayout({
   return (
     <html lang="ja" className="bg-background">
       <body>
-        <AnalyticsJourney />
+        <Script id="usi-analytics-policy" strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: journeyScript("yosakoi.united-studio.com", "yosakoi",
+            process.env.NODE_ENV === "production" && process.env.VERCEL_ENV === "production") }} />
         <SiteAnalytics />
         <a className="skip-link" href="#main-content">
           本文へ移動

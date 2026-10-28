@@ -1,0 +1,316 @@
+{
+  "library": "USI team marks",
+  "baseline": "2026-10-27-optical-size-approved",
+  "teamCount": 23,
+  "assetUse": "Use supplied SVGs unchanged. All optical sizing is baked into the SVG; do not apply a second scale.",
+  "teams": [
+    {
+      "id": "geta",
+      "name": "早稲田大学 下駄っぱーず",
+      "black": "/team-marks/black/geta.svg",
+      "white": "/team-marks/white/geta.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "shortName": "下駄っぱーず",
+      "archiveNames": [
+        "早稲田大学 下駄っぱーず"
+      ],
+      "aliases": [
+        "下駄っぱーず"
+      ]
+    },
+    {
+      "id": "himabito",
+      "name": "関西大学 飛舞人",
+      "black": "/team-marks/black/himabito.svg",
+      "white": "/team-marks/white/himabito.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "shortName": "飛舞人",
+      "archiveNames": [
+        "関西大学 飛舞人"
+      ],
+      "aliases": [
+        "飛舞人"
+      ]
+    },
+    {
+      "id": "iku",
+      "name": "祭三代・IKU!",
+      "black": "/team-marks/black/iku.svg",
+      "white": "/team-marks/white/iku.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "archiveNames": [
+        "祭三代・IKU!"
+      ],
+      "aliases": []
+    },
+    {
+      "id": "kiryu",
+      "name": "妃龍",
+      "black": "/team-marks/black/kiryu.svg",
+      "white": "/team-marks/white/kiryu.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "archiveNames": [
+        "妃龍"
+      ],
+      "aliases": []
+    },
+    {
+      "id": "kokushi",
+      "name": "國士舞双",
+      "black": "/team-marks/black/kokushi.svg",
+      "white": "/team-marks/white/kokushi.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "archiveNames": [
+        "國士舞双"
+      ],
+      "aliases": []
+    },
+    {
+      "id": "matsuriya",
+      "name": "祭や倶楽部",
+      "black": "/team-marks/black/matsuriya.svg",
+      "white": "/team-marks/white/matsuriya.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "archiveNames": [
+        "祭や倶楽部"
+      ],
+      "aliases": [
+        "祭や"
+      ]
+    },
+    {
+      "id": "onibachi",
+      "name": "華舞鬼蜂",
+      "black": "/team-marks/black/onibachi.svg",
+      "white": "/team-marks/white/onibachi.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "archiveNames": [
+        "華舞鬼蜂"
+      ],
+      "aliases": []
+    },
+    {
+      "id": "ringou",
+      "name": "凛轟",
+      "black": "/team-marks/black/ringou.svg",
+      "white": "/team-marks/white/ringou.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "shortName": "凛轟",
+      "archiveNames": [
+        "凛轟"
+      ],
+      "aliases": [
+        "RINGOW"
+      ]
+    },
+    {
+      "id": "shisyamo",
+      "name": "柳葉魚のざわめき",
+      "black": "/team-marks/black/shisyamo.svg",
+      "white": "/team-marks/white/shisyamo.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "archiveNames": [
+        "柳葉魚のざわめき"
+      ],
+      "aliases": []
+    },
+    {
+      "id": "tchipage",
+      "name": "ゐちぺぃじ",
+      "black": "/team-marks/black/tchipage.svg",
+      "white": "/team-marks/white/tchipage.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "archiveNames": [
+        "ゐちぺぃじ"
+      ],
+      "aliases": []
+    },
+    {
+      "id": "tokyohanabi",
+      "name": "早稲田大学よさこいチーム東京花火",
+      "black": "/team-marks/black/tokyohanabi.svg",
+      "white": "/team-marks/white/tokyohanabi.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "shortName": "東京花火",
+      "archiveNames": [
+        "早稲田大学 東京花火"
+      ],
+      "aliases": [
+        "東京花火",
+        "早稲田大学 東京花火"
+      ]
+    },
+    {
+      "id": "tsunagi",
+      "name": "絆葵",
+      "black": "/team-marks/black/tsunagi.svg",
+      "white": "/team-marks/white/tsunagi.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "archiveNames": [
+        "絆葵"
+      ],
+      "aliases": []
+    },
+    {
+      "id": "yosarow",
+      "name": "同志社大学 よさ朗",
+      "black": "/team-marks/black/yosarow.svg",
+      "white": "/team-marks/white/yosarow.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "shortName": "よさ朗",
+      "archiveNames": [
+        "同志社大学 よさ朗"
+      ],
+      "aliases": [
+        "よさ朗"
+      ]
+    },
+    {
+      "id": "yusuhara",
+      "name": "檮原",
+      "black": "/team-marks/black/yusuhara.svg",
+      "white": "/team-marks/white/yusuhara.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "shortName": "檮原",
+      "archiveNames": [
+        "檮原"
+      ],
+      "aliases": [
+        "梼原"
+      ]
+    },
+    {
+      "id": "zokkon",
+      "name": "ぞっこん町田 ’98",
+      "black": "/team-marks/black/zokkon.svg",
+      "white": "/team-marks/white/zokkon.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "archiveNames": [
+        "ぞっこん町田 ’98"
+      ],
+      "aliases": [
+        "ぞっこん町田’98"
+      ]
+    },
+    {
+      "id": "rikadai",
+      "name": "東京理科大学Yosakoiソーラン部",
+      "black": "/team-marks/black/rikadai.svg",
+      "white": "/team-marks/white/rikadai.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "shortName": "東京理科大学",
+      "archiveNames": [],
+      "aliases": [
+        "東京理科大学（仮）",
+        "東京理科大学"
+      ]
+    },
+    {
+      "id": "hozuki",
+      "name": "兵庫教育大学よさこい部 チーム鬼灯",
+      "black": "/team-marks/black/hozuki.svg",
+      "white": "/team-marks/white/hozuki.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "shortName": "鬼灯",
+      "archiveNames": [],
+      "aliases": [
+        "鬼灯"
+      ]
+    },
+    {
+      "id": "hibiki",
+      "name": "よさこいダンスチーム東海大学響",
+      "black": "/team-marks/black/hibiki.svg",
+      "white": "/team-marks/white/hibiki.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "shortName": "響",
+      "archiveNames": [
+        "東海大学 響"
+      ],
+      "aliases": [
+        "東海大學 響",
+        "東海大学 響",
+        "響"
+      ]
+    },
+    {
+      "id": "kotobukiza",
+      "name": "寿座",
+      "black": "/team-marks/black/kotobukiza.svg",
+      "white": "/team-marks/white/kotobukiza.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "archiveNames": [],
+      "aliases": []
+    },
+    {
+      "id": "odorisamurai",
+      "name": "早稲田大学 踊り侍",
+      "black": "/team-marks/black/odorisamurai.svg",
+      "white": "/team-marks/white/odorisamurai.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "shortName": "踊り侍",
+      "archiveNames": [
+        "早稲田大学 踊り侍"
+      ],
+      "aliases": [
+        "踊り侍"
+      ]
+    },
+    {
+      "id": "hamakko",
+      "name": "浜っ鼓★弾★DAN",
+      "black": "/team-marks/black/hamakko.svg",
+      "white": "/team-marks/white/hamakko.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "archiveNames": [
+        "浜っ鼓★弾★DAN"
+      ],
+      "aliases": []
+    },
+    {
+      "id": "sakuya",
+      "name": "咲くやこの花",
+      "black": "/team-marks/black/sakuya.svg",
+      "white": "/team-marks/white/sakuya.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "archiveNames": [
+        "咲くやこの花"
+      ],
+      "aliases": []
+    },
+    {
+      "id": "takamatsu",
+      "name": "高松よさこい連",
+      "black": "/team-marks/black/takamatsu.svg",
+      "white": "/team-marks/white/takamatsu.svg",
+      "viewBox": "0 0 1000 1000",
+      "opticalCorrectionBakedIntoSvg": true,
+      "archiveNames": [
+        "高松よさこい連"
+      ],
+      "aliases": []
+    }
+  ]
+}

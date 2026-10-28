@@ -1,5 +1,5 @@
 import type { KeyboardEvent } from "react";
-import type { YosakoiWork } from "@/data/yosakoi-works";
+import type { PresentedWork } from "@/lib/archive";
 import {
   formatYears,
   getYoutubeEmbedUrl,
@@ -8,7 +8,7 @@ import {
 import { YosakoiThumbnail } from "./YosakoiThumbnail";
 
 type WorkCardProps = {
-  work: YosakoiWork;
+  work: PresentedWork;
   isActive: boolean;
   playbackMode: "inline" | "modal";
   onTogglePlayback: () => void;
@@ -20,7 +20,7 @@ export function WorkCard({
   playbackMode,
   onTogglePlayback,
 }: WorkCardProps) {
-  const accessibleTitle = `${work.teamName}「${work.workTitle ?? "演舞楽曲"}」`;
+  const accessibleTitle = `${work.teamLabel}「${work.workTitle ?? "演舞楽曲"}」`;
 
   function handlePlaybackKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
     if (event.key === "Enter" || event.key === " ") {
@@ -70,10 +70,18 @@ export function WorkCard({
                 : `archive-player-${work.id}`
             }
           >
-            <YosakoiThumbnail work={work} />
+            <YosakoiThumbnail
+              work={work}
+              teamLabel={work.teamLabel}
+              mark={work.mark}
+            />
           </button>
         ) : (
-          <YosakoiThumbnail work={work} />
+          <YosakoiThumbnail
+            work={work}
+            teamLabel={work.teamLabel}
+            mark={work.mark}
+          />
         )}
       </div>
 

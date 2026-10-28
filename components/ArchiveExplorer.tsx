@@ -1,137 +1,289 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import type { YosakoiWork } from "@/data/yosakoi-works";
+import { usePathname, useSearchParams } from "next/navigation";
 import {
-  compareArchiveTeamNames,
+  type MouseEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import {
+  type ArchiveTeam,
+  formatYearRange,
+  getTeamHref,
+  getTeamSearchText,
+  getYearHref,
+  normalizeSearchText,
+  type PresentedWork,
+  type YearSummary,
+} from "@/lib/archive";
+import { announcePlayback, useExclusivePlayback } from "@/lib/playback";
+import {
   getYoutubeEmbedUrl,
   getYoutubeUrl,
   sortWorksNewestFirst,
 } from "@/lib/yosakoi";
+import { TeamMark } from "./TeamMark";
+import { TeamTile } from "./TeamTile";
 import { WorkCard } from "./WorkCard";
 
 type ArchiveExplorerProps = {
-  works: YosakoiWork[];
+  works: PresentedWork[];
+  teams: ArchiveTeam[];
+  years: YearSummary[];
 };
+
+type UrlChanges = Partial<Record<"view" | "team" | "year" | "q", string | null>>;
+type PendingFocus = { kind: "heading" } | { kind: "tile"; teamId: string };
 
 const desktopPageSize = 24;
 const mobilePageSize = 12;
+const playbackSourceId = "archive-explorer";
 
-function normalize(value: string) {
-  return value.normalize("NFKC").toLocaleLowerCase("ja");
+function isPlainLeftClick(event: MouseEvent<HTMLAnchorElement>) {
+  return (
+    !event.defaultPrevented &&
+    event.button === 0 &&
+    !event.metaKey &&
+    !event.ctrlKey &&
+    !event.shiftKey &&
+    !event.altKey
+  );
 }
 
-export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
-  const sortedWorks = useMemo(() => sortWorksNewestFirst(works), [works]);
-  const years = useMemo(
-    () =>
-      [...new Set(works.flatMap((work) => work.years))].sort(
-        (a, b) => b - a,
-      ),
-    [works],
+type WorkGridProps = {
+  works: PresentedWork[];
+  activeWorkId: string | null;
+  playbackMode: "inline" | "modal";
+  onTogglePlayback: (workId: string) => void;
+};
+
+function WorkGrid({
+  works,
+  activeWorkId,
+  playbackMode,
+  onTogglePlayback,
+}: WorkGridProps) {
+  return (
+    <div className="archive-grid">
+      {works.map((work) => (
+        <WorkCard
+          work={work}
+          isActive={activeWorkId === work.id}
+          playbackMode={playbackMode}
+          onTogglePlayback={() => onTogglePlayback(work.id)}
+          key={work.id}
+        />
+      ))}
+    </div>
   );
-  const latestYear = years[0];
-  const latestYearCount = works.filter((work) =>
-    work.years.includes(latestYear),
-  ).length;
-  const initialYear =
-    latestYearCount <= 2 && years[1] !== undefined ? years[1] : latestYear;
-  const initialYearCount = works.filter((work) =>
-    work.years.includes(initialYear),
-  ).length;
-  const [query, setQuery] = useState("");
-  const [year, setYear] = useState("");
-  const [teamId, setTeamId] = useState("");
-  const [pageSize, setPageSize] = useState(desktopPageSize);
-  const [visibleCount, setVisibleCount] = useState(initialYearCount);
-  const [isInitialYearFocus, setIsInitialYearFocus] = useState(true);
-  const [activeWorkId, setActiveWorkId] = useState<string | null>(null);
-  const [isMobilePlayback, setIsMobilePlayback] = useState(false);
+}
+
+export function ArchiveExplorer({ works, teams, years }: ArchiveExplorerProps) {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const topRef = useRef<HTMLDivElement>(null);
+  const pendingFocusRef = useRef<PendingFocus | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const modalCloseRef = useRef<HTMLButtonElement>(null);
   const playbackTriggerRef = useRef<HTMLElement | null>(null);
 
-  useEffect(() => {
-    const media = window.matchMedia("(max-width: 720px)");
-    const updatePageSize = () => {
-      const nextSize = media.matches ? mobilePageSize : desktopPageSize;
-      setPageSize(nextSize);
-      setVisibleCount(initialYearCount);
-      setIsInitialYearFocus(true);
-      setActiveWorkId(null);
-    };
-
-    updatePageSize();
-    media.addEventListener("change", updatePageSize);
-    return () => media.removeEventListener("change", updatePageSize);
-  }, [initialYearCount]);
-
-  useEffect(() => {
-    const media = window.matchMedia("(max-width: 639px)");
-    const updatePlaybackMode = () => {
-      setIsMobilePlayback(media.matches);
-      setActiveWorkId(null);
-    };
-
-    updatePlaybackMode();
-    media.addEventListener("change", updatePlaybackMode);
-    return () => media.removeEventListener("change", updatePlaybackMode);
-  }, []);
-
-  const teams = useMemo(
-    () =>
-      [...new Map(works.map((work) => [work.teamId, work.teamName]))]
-        .map(([id, name]) => ({ id, name }))
-        .sort((a, b) => compareArchiveTeamNames(a.name, b.name)),
+  const sortedWorks = useMemo(() => sortWorksNewestFirst(works), [works]);
+  const teamById = useMemo(
+    () => new Map(teams.map((team) => [team.id, team])),
+    [teams],
+  );
+  const worksById = useMemo(
+    () => new Map(works.map((work) => [work.id, work])),
     [works],
   );
+  const teamSearchText = useMemo(
+    () => new Map(teams.map((team) => [team.id, getTeamSearchText(team)])),
+    [teams],
+  );
 
-  const filteredWorks = useMemo(() => {
-    const normalizedQuery = normalize(query.trim());
+  const teamParam = searchParams.get("team");
+  const selectedTeam = teamParam ? teamById.get(teamParam) : undefined;
+  const yearParam = Number(searchParams.get("year"));
+  const hasValidYear = years.some((item) => item.year === yearParam);
+  const view =
+    !selectedTeam &&
+    (searchParams.get("view") === "years" || hasValidYear)
+      ? "years"
+      : "teams";
+  const selectedYear = hasValidYear ? yearParam : years[0]?.year;
+
+  const [queryInput, setQueryInput] = useState(searchParams.get("q") ?? "");
+  const [extraPages, setExtraPages] = useState(0);
+  const [pageSize, setPageSize] = useState(desktopPageSize);
+  const [isMobilePlayback, setIsMobilePlayback] = useState(false);
+  const [activeWorkId, setActiveWorkId] = useState<string | null>(null);
+
+  const normalizedQuery = normalizeSearchText(queryInput.trim());
+  const isSearching = normalizedQuery.length > 0;
+
+  useExclusivePlayback(playbackSourceId, () => setActiveWorkId(null));
+
+  useEffect(() => {
+    const pageSizeQuery = window.matchMedia("(max-width: 720px)");
+    const playbackQuery = window.matchMedia("(max-width: 639px)");
+    const update = () => {
+      setPageSize(pageSizeQuery.matches ? mobilePageSize : desktopPageSize);
+      setIsMobilePlayback(playbackQuery.matches);
+      setActiveWorkId(null);
+    };
+
+    update();
+    pageSizeQuery.addEventListener("change", update);
+    playbackQuery.addEventListener("change", update);
+    return () => {
+      pageSizeQuery.removeEventListener("change", update);
+      playbackQuery.removeEventListener("change", update);
+    };
+  }, []);
+
+  useEffect(() => {
+    function handlePopState() {
+      const params = new URLSearchParams(window.location.search);
+      setQueryInput(params.get("q") ?? "");
+      setExtraPages(0);
+      setActiveWorkId(null);
+    }
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  const updateUrl = useCallback(
+    (changes: UrlChanges, method: "push" | "replace") => {
+      const params = new URLSearchParams(window.location.search);
+
+      for (const [key, value] of Object.entries(changes)) {
+        if (value) params.set(key, value);
+        else params.delete(key);
+      }
+
+      const query = params.toString();
+      const url = query ? `${pathname}?${query}` : pathname;
+
+      if (method === "push") window.history.pushState(null, "", url);
+      else window.history.replaceState(null, "", url);
+    },
+    [pathname],
+  );
+
+  useEffect(() => {
+    const pending = pendingFocusRef.current;
+    if (!pending) return;
+    pendingFocusRef.current = null;
+
+    if (pending.kind === "heading") {
+      headingRef.current?.focus({ preventScroll: true });
+      topRef.current?.scrollIntoView({ block: "start" });
+      return;
+    }
+
+    const tile = document.querySelector<HTMLElement>(
+      `.team-index-grid [data-team-id="${CSS.escape(pending.teamId)}"]`,
+    );
+    tile?.focus({ preventScroll: true });
+    tile?.scrollIntoView({ block: "center" });
+  }, [selectedTeam?.id, view, selectedYear, isSearching]);
+
+  function selectTeam(teamId: string) {
+    pendingFocusRef.current = { kind: "heading" };
+    setQueryInput("");
+    setActiveWorkId(null);
+    updateUrl({ team: teamId, view: null, year: null, q: null }, "push");
+  }
+
+  function showTeamIndex(focusTeamId?: string) {
+    pendingFocusRef.current = focusTeamId
+      ? { kind: "tile", teamId: focusTeamId }
+      : { kind: "heading" };
+    setActiveWorkId(null);
+    updateUrl({ team: null, view: null, year: null }, "push");
+  }
+
+  function showYears(year?: number) {
+    pendingFocusRef.current = { kind: "heading" };
+    setActiveWorkId(null);
+    updateUrl(
+      { view: "years", year: year ? String(year) : null, team: null },
+      view === "years" ? "replace" : "push",
+    );
+  }
+
+  function handleQueryChange(value: string) {
+    setQueryInput(value);
+    setExtraPages(0);
+    setActiveWorkId(null);
+    updateUrl({ q: value.trim() ? value : null }, "replace");
+  }
+
+  function clearQuery() {
+    handleQueryChange("");
+  }
+
+  const teamWorks = useMemo(
+    () =>
+      selectedTeam
+        ? sortedWorks.filter((work) => work.teamId === selectedTeam.id)
+        : [],
+    [selectedTeam, sortedWorks],
+  );
+
+  const yearWorks = useMemo(
+    () =>
+      selectedYear
+        ? sortedWorks.filter((work) => work.years.includes(selectedYear))
+        : [],
+    [selectedYear, sortedWorks],
+  );
+
+  const matchingTeams = useMemo(
+    () =>
+      isSearching
+        ? teams.filter((team) =>
+            teamSearchText.get(team.id)?.includes(normalizedQuery),
+          )
+        : [],
+    [isSearching, normalizedQuery, teamSearchText, teams],
+  );
+
+  const searchResults = useMemo(() => {
+    if (!isSearching) return [];
 
     return sortedWorks.filter((work) => {
-      const searchable = normalize(
-        [work.teamName, work.workTitle, work.years.join(" ")].join(" "),
-      );
+      const searchable = [
+        teamSearchText.get(work.teamId) ?? "",
+        normalizeSearchText(work.workTitle ?? ""),
+        work.years.join(" "),
+      ].join(" ");
 
-      return (
-        (!normalizedQuery || searchable.includes(normalizedQuery)) &&
-        (!year || work.years.includes(Number(year))) &&
-        (!teamId || work.teamId === teamId)
-      );
+      return searchable.includes(normalizedQuery);
     });
-  }, [query, sortedWorks, teamId, year]);
+  }, [isSearching, normalizedQuery, sortedWorks, teamSearchText]);
 
-  const hasFilters = Boolean(query || year || teamId);
-  const initialYearWorks = useMemo(
-    () => filteredWorks.filter((work) => work.years.includes(initialYear)),
-    [filteredWorks, initialYear],
+  const visibleSearchResults = searchResults.slice(
+    0,
+    pageSize * (extraPages + 1),
   );
-  const visibleWorks = useMemo(
-    () =>
-      isInitialYearFocus && !hasFilters
-        ? initialYearWorks
-        : filteredWorks.slice(0, visibleCount),
-    [
-      filteredWorks,
-      hasFilters,
-      initialYearWorks,
-      isInitialYearFocus,
-      visibleCount,
-    ],
-  );
-  const resultCount =
-    isInitialYearFocus && !hasFilters
-      ? initialYearWorks.length
-      : filteredWorks.length;
-  const canLoadMore =
-    isInitialYearFocus && !hasFilters
-      ? initialYearWorks.length < filteredWorks.length
-      : visibleCount < filteredWorks.length;
-  const activeWork = useMemo(
-    () => sortedWorks.find((work) => work.id === activeWorkId) ?? null,
-    [activeWorkId, sortedWorks],
-  );
+
+  const visibleWorks = isSearching
+    ? visibleSearchResults
+    : selectedTeam
+      ? teamWorks
+      : view === "years"
+        ? yearWorks
+        : [];
+  const activeWork =
+    activeWorkId && visibleWorks.some((work) => work.id === activeWorkId)
+      ? worksById.get(activeWorkId)
+      : undefined;
 
   function closePlayback({ restoreFocus = true } = {}) {
     setActiveWorkId(null);
@@ -148,6 +300,7 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
 
     playbackTriggerRef.current = document.activeElement as HTMLElement | null;
     setActiveWorkId(workId);
+    announcePlayback(playbackSourceId);
   }
 
   useEffect(() => {
@@ -158,7 +311,8 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
     function handleModalKeyDown(event: globalThis.KeyboardEvent) {
       if (event.key === "Escape") {
         event.preventDefault();
-        closePlayback();
+        setActiveWorkId(null);
+        window.requestAnimationFrame(() => playbackTriggerRef.current?.focus());
         return;
       }
 
@@ -183,190 +337,360 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
     }
 
     document.addEventListener("keydown", handleModalKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleModalKeyDown);
-    };
+    return () => document.removeEventListener("keydown", handleModalKeyDown);
   }, [activeWorkId, isMobilePlayback]);
 
-  function resetFilters() {
-    setQuery("");
-    setYear("");
-    setTeamId("");
-    setVisibleCount(initialYearCount);
-    setIsInitialYearFocus(true);
-    setActiveWorkId(null);
-  }
+  const statusText = isSearching
+    ? `「${queryInput.trim()}」に一致する作品 ${searchResults.length}件`
+    : selectedTeam
+      ? `${selectedTeam.name}の作品 ${teamWorks.length}件`
+      : view === "years"
+        ? `${selectedYear}年の作品 ${yearWorks.length}件`
+        : `${teams.length}チーム・${works.length}作品`;
 
-  function resetVisibleCount() {
-    setVisibleCount(pageSize);
-    setIsInitialYearFocus(false);
-    setActiveWorkId(null);
-  }
+  const teamIndex = selectedTeam
+    ? teams.findIndex((team) => team.id === selectedTeam.id)
+    : -1;
+  const previousTeam = teamIndex > 0 ? teams[teamIndex - 1] : undefined;
+  const nextTeam =
+    teamIndex >= 0 && teamIndex < teams.length - 1
+      ? teams[teamIndex + 1]
+      : undefined;
+  const yearIndex = years.findIndex((item) => item.year === selectedYear);
+  const newerYear = yearIndex > 0 ? years[yearIndex - 1] : undefined;
+  const olderYear =
+    yearIndex >= 0 && yearIndex < years.length - 1
+      ? years[yearIndex + 1]
+      : undefined;
+
+  const renderWorkGrid = (list: PresentedWork[]) => (
+    <WorkGrid
+      works={list}
+      activeWorkId={activeWorkId}
+      playbackMode={isMobilePlayback ? "inline" : "modal"}
+      onTogglePlayback={togglePlayback}
+    />
+  );
 
   return (
-    <div className="archive-explorer">
-      <div className="archive-search">
-        <label htmlFor="archive-query">チーム名・曲名・年度から検索</label>
-        <div className="archive-search__field">
-          <span aria-hidden="true">⌕</span>
-          <input
-            id="archive-query"
-            type="search"
-            value={query}
-            placeholder="例：國士舞双、青き羅針盤、2025"
-            onChange={(event) => {
-              setQuery(event.target.value);
-              resetVisibleCount();
+    <div className="explorer" ref={topRef}>
+      <div className="explorer__bar">
+        <nav className="explorer__modes" aria-label="作品のたどり方">
+          <a
+            href="/archive"
+            aria-current={!isSearching && view === "teams" ? "page" : undefined}
+            onClick={(event) => {
+              if (!isPlainLeftClick(event)) return;
+              event.preventDefault();
+              if (!isSearching && view === "teams" && !selectedTeam) return;
+              if (isSearching) clearQuery();
+              showTeamIndex(selectedTeam?.id);
             }}
-          />
-        </div>
-      </div>
-
-      <details className="archive-filters" open>
-        <summary>
-          絞り込み
-          <span>{hasFilters ? "条件あり" : "すべて表示"}</span>
-        </summary>
-        <div className="archive-filters__controls">
-          <label htmlFor="archive-year">
-            <span>年度</span>
-            <select
-              id="archive-year"
-              name="year"
-              value={year}
-              onChange={(event) => {
-                setYear(event.target.value);
-                resetVisibleCount();
-              }}
-            >
-              <option value="">すべての年度</option>
-              {years.map((item) => (
-                <option value={item} key={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label htmlFor="archive-team">
-            <span>チーム</span>
-            <select
-              id="archive-team"
-              name="team"
-              value={teamId}
-              onChange={(event) => {
-                setTeamId(event.target.value);
-                resetVisibleCount();
-              }}
-            >
-              <option value="">すべてのチーム</option>
-              {teams.map((team) => (
-                <option value={team.id} key={team.id}>
-                  {team.name}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <button
-            className="filter-reset"
-            type="button"
-            onClick={resetFilters}
-            disabled={!hasFilters}
           >
-            条件をリセット
-          </button>
-        </div>
-      </details>
+            チームからたどる
+          </a>
+          <a
+            href="/archive?view=years"
+            aria-current={!isSearching && view === "years" ? "page" : undefined}
+            onClick={(event) => {
+              if (!isPlainLeftClick(event)) return;
+              event.preventDefault();
+              if (!isSearching && view === "years") return;
+              if (isSearching) clearQuery();
+              showYears(view === "years" ? selectedYear : undefined);
+            }}
+          >
+            年度からたどる
+          </a>
+        </nav>
 
-      <div className="archive-status">
-        <p aria-live="polite">
-          <strong>{resultCount}</strong> 作品
-        </p>
-        <div className="filter-chips" aria-label="選択中の条件">
-          {isInitialYearFocus && !hasFilters ? (
-            <span className="filter-chips__focus">
-              {initialYear}年 初期表示
-            </span>
-          ) : null}
-          {query ? (
-            <button
-              type="button"
-              onClick={() => {
-                setQuery("");
-                resetVisibleCount();
-              }}
+        <div className="explorer__search" role="search">
+          <label htmlFor="archive-query">チーム名・曲名・年度で探す</label>
+          <div className="explorer__search-field">
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
             >
-              「{query}」 ×
-            </button>
-          ) : null}
-          {year ? (
-            <button
-              type="button"
-              onClick={() => {
-                setYear("");
-                resetVisibleCount();
-              }}
-            >
-              {year}年 ×
-            </button>
-          ) : null}
-          {teamId ? (
-            <button
-              type="button"
-              onClick={() => {
-                setTeamId("");
-                resetVisibleCount();
-              }}
-            >
-              {teams.find((team) => team.id === teamId)?.name} ×
-            </button>
-          ) : null}
-        </div>
-      </div>
-
-      {visibleWorks.length ? (
-        <div className="archive-grid">
-          {visibleWorks.map((work) => (
-            <WorkCard
-              work={work}
-              isActive={activeWorkId === work.id}
-              playbackMode={isMobilePlayback ? "inline" : "modal"}
-              onTogglePlayback={() => togglePlayback(work.id)}
-              key={work.id}
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <path d="m15.5 15.5 5 5" />
+            </svg>
+            <input
+              id="archive-query"
+              type="search"
+              value={queryInput}
+              placeholder="例：國士舞双、青き羅針盤、2025"
+              autoComplete="off"
+              onChange={(event) => handleQueryChange(event.target.value)}
             />
-          ))}
+            {queryInput ? (
+              <button type="button" onClick={clearQuery}>
+                クリア
+              </button>
+            ) : null}
+          </div>
         </div>
-      ) : (
-        <div className="archive-empty">
-          <p>条件に一致する作品がありません。</p>
-          <button type="button" onClick={resetFilters}>
-            すべての作品を表示
-          </button>
-        </div>
-      )}
+      </div>
 
-      {canLoadMore ? (
-        <div className="load-more">
-          <button
-            type="button"
-            onClick={() => {
-              setIsInitialYearFocus(false);
-              setVisibleCount((count) =>
-                isInitialYearFocus
-                  ? initialYearWorks.length + pageSize
-                  : count + pageSize,
-              );
-              setActiveWorkId(null);
+      <p className="explorer__status" aria-live="polite">
+        {statusText}
+      </p>
+
+      {isSearching ? (
+        <section className="explorer__panel" aria-labelledby="explorer-heading">
+          {matchingTeams.length ? (
+            <div className="search-teams">
+              <h3>一致するチーム</h3>
+              <ul>
+                {matchingTeams.map((team) => (
+                  <li key={team.id}>
+                    <a
+                      href={getTeamHref(team.id)}
+                      onClick={(event) => {
+                        if (!isPlainLeftClick(event)) return;
+                        event.preventDefault();
+                        selectTeam(team.id);
+                      }}
+                    >
+                      {team.mark ? (
+                        <TeamMark mark={team.mark} size={96} />
+                      ) : null}
+                      <span>
+                        <strong>{team.name}</strong>
+                        <small>
+                          {formatYearRange(team.oldestYear, team.newestYear)}・
+                          {team.workCount}作品
+                        </small>
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
+          <h2 className="explorer__heading" id="explorer-heading" ref={headingRef} tabIndex={-1}>
+            「{queryInput.trim()}」に一致する作品
+          </h2>
+
+          {visibleSearchResults.length ? (
+            renderWorkGrid(visibleSearchResults)
+          ) : (
+            <div className="archive-empty">
+              <p>条件に一致する作品がありません。</p>
+              <button type="button" onClick={clearQuery}>
+                検索をクリアする
+              </button>
+            </div>
+          )}
+
+          {visibleSearchResults.length < searchResults.length ? (
+            <div className="load-more">
+              <button
+                type="button"
+                onClick={() => {
+                  setExtraPages((pages) => pages + 1);
+                  setActiveWorkId(null);
+                }}
+              >
+                もっと見る
+                <span>
+                  {visibleSearchResults.length} / {searchResults.length}
+                </span>
+              </button>
+            </div>
+          ) : null}
+        </section>
+      ) : selectedTeam ? (
+        <section className="explorer__panel team-detail" aria-labelledby="explorer-heading">
+          <a
+            className="team-detail__back"
+            href="/archive"
+            onClick={(event) => {
+              if (!isPlainLeftClick(event)) return;
+              event.preventDefault();
+              showTeamIndex(selectedTeam.id);
             }}
           >
-            もっと見る
-            <span>
-              {visibleWorks.length} / {filteredWorks.length}
-            </span>
-          </button>
-        </div>
-      ) : null}
+            <span aria-hidden="true">←</span> チーム一覧へ戻る
+          </a>
+
+          <header className="team-detail__head">
+            {selectedTeam.mark ? (
+              <div className="team-detail__mark">
+                <TeamMark mark={selectedTeam.mark} size={200} priority />
+              </div>
+            ) : null}
+            <div className="team-detail__title">
+              <p className="eyebrow">チームの作品</p>
+              <h2 id="explorer-heading" ref={headingRef} tabIndex={-1}>
+                {selectedTeam.name}
+              </h2>
+              {selectedTeam.archiveName !== selectedTeam.name ? (
+                <p className="team-detail__alias">
+                  別表記：{selectedTeam.archiveName}
+                </p>
+              ) : null}
+              <dl className="team-detail__facts">
+                <div>
+                  <dt>年度</dt>
+                  <dd>
+                    {formatYearRange(
+                      selectedTeam.oldestYear,
+                      selectedTeam.newestYear,
+                    )}
+                  </dd>
+                </div>
+                <div>
+                  <dt>作品</dt>
+                  <dd>{selectedTeam.workCount}作品</dd>
+                </div>
+              </dl>
+            </div>
+          </header>
+
+          {renderWorkGrid(teamWorks)}
+
+          <nav className="explorer__pager" aria-label="ほかのチーム">
+            {previousTeam ? (
+              <a
+                href={getTeamHref(previousTeam.id)}
+                onClick={(event) => {
+                  if (!isPlainLeftClick(event)) return;
+                  event.preventDefault();
+                  selectTeam(previousTeam.id);
+                }}
+              >
+                <span aria-hidden="true">←</span>
+                <span>
+                  <small>前のチーム</small>
+                  {previousTeam.name}
+                </span>
+              </a>
+            ) : (
+              <span />
+            )}
+            {nextTeam ? (
+              <a
+                className="explorer__pager-next"
+                href={getTeamHref(nextTeam.id)}
+                onClick={(event) => {
+                  if (!isPlainLeftClick(event)) return;
+                  event.preventDefault();
+                  selectTeam(nextTeam.id);
+                }}
+              >
+                <span>
+                  <small>次のチーム</small>
+                  {nextTeam.name}
+                </span>
+                <span aria-hidden="true">→</span>
+              </a>
+            ) : null}
+          </nav>
+        </section>
+      ) : view === "years" ? (
+        <section className="explorer__panel" aria-labelledby="explorer-heading">
+          <nav className="year-picker" aria-label="年度を選ぶ">
+            <ol>
+              {years.map((item) => (
+                <li key={item.year}>
+                  <a
+                    href={getYearHref(item.year)}
+                    aria-current={item.year === selectedYear ? "true" : undefined}
+                    onClick={(event) => {
+                      if (!isPlainLeftClick(event)) return;
+                      event.preventDefault();
+                      if (item.year === selectedYear) return;
+                      showYears(item.year);
+                    }}
+                  >
+                    <strong>{item.year}</strong>
+                    <small>{item.count}作品</small>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+
+          <h2 className="explorer__heading" id="explorer-heading" ref={headingRef} tabIndex={-1}>
+            {selectedYear}年の作品
+          </h2>
+
+          {renderWorkGrid(yearWorks)}
+
+          <nav className="explorer__pager" aria-label="ほかの年度">
+            {newerYear ? (
+              <a
+                href={getYearHref(newerYear.year)}
+                onClick={(event) => {
+                  if (!isPlainLeftClick(event)) return;
+                  event.preventDefault();
+                  showYears(newerYear.year);
+                }}
+              >
+                <span aria-hidden="true">←</span>
+                <span>
+                  <small>新しい年度</small>
+                  {newerYear.year}年
+                </span>
+              </a>
+            ) : (
+              <span />
+            )}
+            {olderYear ? (
+              <a
+                className="explorer__pager-next"
+                href={getYearHref(olderYear.year)}
+                onClick={(event) => {
+                  if (!isPlainLeftClick(event)) return;
+                  event.preventDefault();
+                  showYears(olderYear.year);
+                }}
+              >
+                <span>
+                  <small>前の年度</small>
+                  {olderYear.year}年
+                </span>
+                <span aria-hidden="true">→</span>
+              </a>
+            ) : null}
+          </nav>
+        </section>
+      ) : (
+        <section className="explorer__panel" aria-labelledby="explorer-heading">
+          <div className="explorer__intro">
+            <h2 className="explorer__heading" id="explorer-heading" ref={headingRef} tabIndex={-1}>
+              チームを選ぶ
+            </h2>
+            <p>
+              マークか名前を選ぶと、そのチームの全年度の作品が並びます。
+            </p>
+          </div>
+          <ul className="team-index-grid">
+            {teams.map((team, index) => (
+              <li key={team.id}>
+                <TeamTile
+                  team={team}
+                  href={getTeamHref(team.id)}
+                  latestWork={worksById.get(team.latestWorkId)}
+                  priority={index < 8}
+                  onSelect={(event) => {
+                    if (!isPlainLeftClick(event)) return;
+                    event.preventDefault();
+                    selectTeam(team.id);
+                  }}
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {!isMobilePlayback && activeWork?.youtubeId ? (
         <div
@@ -388,7 +712,7 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
               ref={modalCloseRef}
               type="button"
               onClick={() => closePlayback()}
-              aria-label={`${activeWork.teamName}「${activeWork.workTitle ?? "演舞楽曲"}」の再生を閉じる`}
+              aria-label={`${activeWork.teamLabel}「${activeWork.workTitle ?? "演舞楽曲"}」の再生を閉じる`}
             >
               <span aria-hidden="true">×</span>
               閉じる
@@ -396,14 +720,14 @@ export function ArchiveExplorer({ works }: ArchiveExplorerProps) {
             <div className="archive-player-modal__video">
               <iframe
                 src={getYoutubeEmbedUrl(activeWork.youtubeId, true)}
-                title={`${activeWork.teamName}「${activeWork.workTitle ?? "演舞楽曲"}」を再生`}
+                title={`${activeWork.teamLabel}「${activeWork.workTitle ?? "演舞楽曲"}」を再生`}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
               />
             </div>
             <div className="archive-player-modal__copy">
               <div>
-                <p>{activeWork.teamName}</p>
+                <p>{activeWork.teamLabel}</p>
                 <h2 id="archive-playback-title">
                   {activeWork.workTitle ?? "演舞楽曲"}
                 </h2>

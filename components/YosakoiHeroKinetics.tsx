@@ -4,7 +4,11 @@ import { useEffect, useRef } from "react";
 
 type RGB = readonly [number, number, number];
 
-export type KineticsVariant = "hero" | "finale" | "contact";
+export type KineticsVariant = "hero" | "bridge" | "finale" | "contact";
+
+/** "bridge" carries the full hero intensity into the archive → 國士舞双 scene. */
+const isPrimaryVariant = (variant: KineticsVariant) =>
+  variant === "hero" || variant === "bridge";
 
 type NodeScale = "small" | "medium" | "large";
 type SpeedBand = "slow" | "medium" | "fast";
@@ -72,23 +76,30 @@ const palette: RGB[] = [
   [173, 22, 45],
 ];
 
+const heroTuning = {
+  opacity: 1,
+  desktopMinimum: 28,
+  desktopMaximum: 40,
+  mobileMinimum: 12,
+  mobileMaximum: 20,
+  areaPerNode: 37000,
+  maximumSparks: 96,
+  maximumRings: 16,
+  shockwaveMinimum: 0.58,
+  shockwaveMaximum: 1.2,
+  collisionShockwaveChance: 0.5,
+  surgeShockwaveChance: 0.52,
+  shockwaveCooldown: 1500,
+  shockwaveIntervalMinimum: 3900,
+  shockwaveIntervalMaximum: 6400,
+} as const;
+
 const variantTuning = {
-  hero: {
-    opacity: 1,
-    desktopMinimum: 28,
-    desktopMaximum: 40,
-    mobileMinimum: 12,
-    mobileMaximum: 20,
-    areaPerNode: 37000,
-    maximumSparks: 96,
-    maximumRings: 16,
-    shockwaveMinimum: 0.58,
-    shockwaveMaximum: 1.2,
-    collisionShockwaveChance: 0.5,
-    surgeShockwaveChance: 0.52,
-    shockwaveCooldown: 1500,
-    shockwaveIntervalMinimum: 3900,
-    shockwaveIntervalMaximum: 6400,
+  hero: heroTuning,
+  bridge: {
+    ...heroTuning,
+    mobileMinimum: 9,
+    mobileMaximum: 14,
   },
   finale: {
     opacity: 0.82,
@@ -192,12 +203,12 @@ function createNode(
   mobile: boolean,
   variant: KineticsVariant,
 ): MovingNode {
-  const largeCount = mobile ? 1 : variant === "hero" ? 3 : 2;
+  const largeCount = mobile ? 1 : isPrimaryVariant(variant) ? 3 : 2;
   const mediumCount = mobile
-    ? variant === "hero"
+    ? isPrimaryVariant(variant)
       ? 5
       : 3
-    : variant === "hero"
+    : isPrimaryVariant(variant)
       ? 10
       : 7;
   const scale: NodeScale =
@@ -326,8 +337,8 @@ export function YosakoiHeroKinetics({
     let nextShockwave =
       lastTime +
       randomBetween(
-        variant === "hero" ? 1500 : 2200,
-        variant === "hero" ? 2700 : 3600,
+        isPrimaryVariant(variant) ? 1500 : 2200,
+        isPrimaryVariant(variant) ? 2700 : 3600,
       );
     let surgeUntil = 0;
     let surgeAngle = -0.24;
@@ -358,7 +369,12 @@ export function YosakoiHeroKinetics({
     function updateQuietZones() {
       const canvasRect = canvas.getBoundingClientRect();
       const zoneDefinitions =
-        variant === "hero"
+        variant === "bridge"
+          ? [
+              [".movement__copy", 0.5, 22],
+              [".movement__index", 0.6, 12],
+            ]
+          : variant === "hero"
           ? [
               [".hero__copy", 0.66, 18],
               [".hero__actions", 0.46, 14],
@@ -547,8 +563,8 @@ export function YosakoiHeroKinetics({
         lineWidth: randomBetween(mobile ? 1.05 : 1.2, mobile ? 2.15 : 2.65),
         baseAlpha:
           randomBetween(
-            variant === "hero" ? 0.28 : 0.25,
-            variant === "hero" ? 0.48 : 0.44,
+            isPrimaryVariant(variant) ? 0.28 : 0.25,
+            isPrimaryVariant(variant) ? 0.48 : 0.44,
           ) * tuning.opacity,
         color:
           preferredColor ??
@@ -637,8 +653,8 @@ export function YosakoiHeroKinetics({
       );
 
       nextCharge = now + randomBetween(
-        variant === "hero" ? 1900 : 2600,
-        variant === "hero" ? 3600 : 4800,
+        isPrimaryVariant(variant) ? 1900 : 2600,
+        isPrimaryVariant(variant) ? 3600 : 4800,
       );
     }
 
@@ -1082,8 +1098,8 @@ export function YosakoiHeroKinetics({
         const y = randomBetween(height * 0.08, height * 0.94);
         createBurst(x, y, randomBetween(0.62, 0.94));
         nextAmbientBurst = now + randomBetween(
-          variant === "hero" ? 1050 : 1550,
-          variant === "hero" ? 2200 : 2900,
+          isPrimaryVariant(variant) ? 1050 : 1550,
+          isPrimaryVariant(variant) ? 2200 : 2900,
         );
       }
 
