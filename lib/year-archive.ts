@@ -82,7 +82,16 @@ export function buildStageArchive(works: YosakoiWork[]): StageArchive {
   const teamById = new Map(teams.map((team) => [team.id, team]));
   const worksByYear = new Map<number, StageWork[]>();
 
-  for (const work of sortWorksNewestFirst(works)) {
+  const orderedWorks = sortWorksNewestFirst(works).sort((a, b) => {
+    const yearDifference = getArchiveYear(b) - getArchiveYear(a);
+    if (yearDifference) return yearDifference;
+    const teamA = teamById.get(a.teamId);
+    const teamB = teamById.get(b.teamId);
+    return (teamB?.workCount ?? 0) - (teamA?.workCount ?? 0)
+      || (teamA?.name ?? a.teamName).localeCompare(teamB?.name ?? b.teamName, "ja");
+  });
+
+  for (const work of orderedWorks) {
     const team = teamById.get(work.teamId);
     const teamName = team?.name ?? work.teamName;
     const archiveYear = getArchiveYear(work);

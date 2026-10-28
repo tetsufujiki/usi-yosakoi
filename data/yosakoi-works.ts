@@ -28,7 +28,7 @@ export const allYosakoiWorks: YosakoiWork[] = [
     id: "2026-hozuki-meguri",
     years: [2026],
     teamId: "hozuki",
-    teamName: "兵庫教育大学よさこい部 チーム鬼灯",
+    teamName: "兵庫教育大学 チーム鬼灯",
     workTitle: "巡(めぐり)",
     youtubeId: "6CPOxqByn7M",
   },
