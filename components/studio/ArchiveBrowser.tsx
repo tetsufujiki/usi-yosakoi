@@ -102,6 +102,7 @@ export function ArchiveBrowser({ archive, initialYear, initialTeam = "all", init
     ...countedTeams,
   ];
   const matched = queriedWorks.filter((work) => (filters.year === "all" || work.years.includes(Number(filters.year))) && (filters.team === "all" || work.teamId === filters.team));
+  const visibleLimit = filters.year === "all" ? filters.limit : matched.length;
   const queueIds = matched.filter((work) => work.youtubeId).map((work) => work.id);
   const selectedTeam = teams.find((team) => team.id === filters.team);
   const teamLabel = selectedTeam?.label ?? "全チーム";
@@ -145,9 +146,9 @@ export function ArchiveBrowser({ archive, initialYear, initialTeam = "all", init
           <div><p>チームと重ねた、演舞の記録</p><h2>{selectedTeam.label}</h2></div>
         </div> : null}
         <ul className={`studio-work-grid ${selectedTeam ? "studio-work-grid--tracks" : ""}`} aria-label="絞り込んだ作品">
-          {matched.slice(0, filters.limit).map((work) => <li key={work.id}><SoundCard work={work} queueIds={queueIds} compact={Boolean(selectedTeam)} /></li>)}
+          {matched.slice(0, visibleLimit).map((work) => <li key={work.id}><SoundCard work={work} queueIds={queueIds} compact={Boolean(selectedTeam)} /></li>)}
         </ul>
-        {matched.length > filters.limit ? <button type="button" className="archive-more" onClick={() => setFilters((current) => ({ ...current, limit: current.limit + PAGE_SIZE }))}>続きを見る <span>{Math.min(filters.limit, matched.length)} / {matched.length}</span><span aria-hidden="true">↓</span></button> : null}
+        {matched.length > visibleLimit ? <button type="button" className="archive-more" onClick={() => setFilters((current) => ({ ...current, limit: current.limit + PAGE_SIZE }))}>続きを見る <span>{Math.min(filters.limit, matched.length)} / {matched.length}</span><span aria-hidden="true">↓</span></button> : null}
       </> : <div className="archive-empty" role="status">
         <p>{filters.query ? "条件に合う作品が見つかりませんでした。" : `${filters.year}年の「${teamLabel}」の作品はありません。`}</p>
         <div>{filters.query ? <button className="archive-empty__primary" type="button" onClick={() => setFilters((current) => ({ ...current, query: "", limit: PAGE_SIZE }))}>検索語をクリア →</button> : <button className="archive-empty__primary" type="button" onClick={() => selectTeam("all")}>チームを解除して、{filters.year}年を見る →</button>}<button type="button" onClick={() => selectYear("all")}>このチームの全年度を見る →</button></div>
