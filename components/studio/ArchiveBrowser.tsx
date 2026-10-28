@@ -112,6 +112,7 @@ export function ArchiveBrowser({ archive, initialYear, initialTeam = "all", init
 
   return (
     <>
+      <h2 className="studio-library-title">MUSIC LIBRARY</h2>
       {showSearch ? <>
         {collapsibleSearch ? <div className="studio-search-toggle"><button type="button" aria-expanded={searchVisible} aria-controls={searchId} onClick={() => {
           if (searchVisible) { setSearchOpen(false); setFilters((current) => ({ ...current, query: "", limit: PAGE_SIZE })); }

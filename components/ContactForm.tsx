@@ -21,6 +21,11 @@ export function ContactForm() {
   const [errors, setErrors] = useState<ContactFieldErrors>({});
   const [status, setStatus] = useState<FormStatus>("idle");
   const startedAtRef = useRef(0);
+  const successDialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    if (status === "success") successDialogRef.current?.showModal();
+  }, [status]);
 
   useEffect(() => {
     startedAtRef.current = Date.now();
@@ -298,12 +303,6 @@ export function ContactForm() {
           aria-live="polite"
           aria-atomic="true"
         >
-          {status === "success" ? (
-            <div className="contact-form__message">
-              <p>お問い合わせを受け付けました。</p>
-              <p>内容を確認のうえ、返信いたします。</p>
-            </div>
-          ) : null}
           {status === "error" ? (
             <div className="contact-form__message" role="alert">
               <p>送信できませんでした。</p>
@@ -312,6 +311,12 @@ export function ContactForm() {
           ) : null}
         </div>
       </div>
+      <dialog ref={successDialogRef} className="contact-success-dialog" aria-labelledby="contact-success-title" aria-describedby="contact-success-description" onClose={() => setStatus("idle")}>
+        <span className="contact-success-dialog__check" aria-hidden="true">✓</span>
+        <h2 id="contact-success-title">お問い合わせを<br />受け付けました。</h2>
+        <p id="contact-success-description">内容を確認のうえ、返信いたします。</p>
+        <button type="button" onClick={() => successDialogRef.current?.close()}>閉じる</button>
+      </dialog>
     </form>
   );
 }

@@ -495,3 +495,5 @@ body:has(.studio)::before { content: none; }
   .studio-anniversary > p { font-size: 13px; }
   .studio-anniversary__film { flex-basis: 112px; width: 112px; }
 }
+
+.studio-library-title { margin: 0 0 28px; text-align: center; font-family: Arial, sans-serif; font-size: clamp(16px, 1.6vw, 21px); font-weight: 600; letter-spacing: .2em; line-height: 1.5; }

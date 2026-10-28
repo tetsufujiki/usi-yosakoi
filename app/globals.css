@@ -5354,3 +5354,38 @@ button.text-link {
     display: none;
   }
 }
+
+/* Acknowledgement stays in view until explicitly dismissed. */
+.contact-success-dialog { position: fixed; inset: 0; margin: auto; width: min(36rem, calc(100% - 2rem)); max-height: calc(100dvh - 2rem); overflow: auto; padding: clamp(2rem, 6vw, 4rem); border: 1px solid #111; background: #fff; color: #111; text-align: center; box-shadow: 0 24px 100px #0004; }
+.contact-success-dialog::backdrop { background: #0009; }
+.contact-success-dialog__check { display: block; margin-bottom: 1.5rem; color: #d90000; font-size: 2.5rem; }
+.contact-success-dialog h2 { margin: 0; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.5; }
+.contact-success-dialog p { margin: 1.5rem 0 2rem; font-size: 1rem; line-height: 1.9; }
+.contact-success-dialog button { min-height: 48px; width: 100%; padding: 0.8rem 1.5rem; border: 1px solid #111; background: #111; color: #fff; font-size: 1rem; cursor: pointer; }
+.contact-success-dialog button:focus-visible { outline: 3px solid #d90000; outline-offset: 4px; }
+
+.studio .studio-contact-motion { position: relative; isolation: isolate; overflow: hidden; background: #330b13; color: #fff; }
+.studio-contact-motion > .kinetics-canvas { z-index: -1; opacity: .95; }
+.studio-contact-motion__copy { position: relative; z-index: 1; max-width: 54rem; text-shadow: 0 2px 24px #23020a; }
+.studio .studio-contact-motion .studio-section-label { color: #ffd7b1; }
+.studio .studio-contact-motion__copy > p:last-child { color: #fff; max-width: 38rem; font-size: 1rem; line-height: 2; }
+
+.studio-contact-motion-page { position: relative; isolation: isolate; overflow: hidden; background: #330b13; color: #fff; }
+.studio-contact-motion-page > .kinetics-canvas { z-index: -1; }
+.studio .studio-contact-motion-page .studio-contact-motion { background: transparent; }
+.studio-contact-motion-page .studio-contact { position: relative; }
+.studio-contact-motion-page .studio-contact__note { color: #fff; }
+.studio-contact-motion-page .studio-contact__note p, .studio-contact-motion-page .studio-contact__note dd { color: #fff; }
+.studio-contact-motion-page .studio-contact__form { padding: clamp(1.25rem, 3vw, 2.5rem); background: rgba(255,255,255,.86); color: #111; }
+
+.studio .studio-contact-motion-page { background: #faf8f4; color: #111; }
+.studio .studio-contact-motion-page > .kinetics-canvas { z-index: 0; }
+.studio .studio-contact-motion-page .studio-contact-motion { isolation: auto; background: transparent; color: #111; }
+.studio .studio-contact-motion-page .studio-contact-motion__copy { text-shadow: none; }
+.studio .studio-contact-motion-page .studio-section-label { color: #b71020; }
+.studio .studio-contact-motion-page .studio-contact-motion__copy > p:last-child,
+.studio .studio-contact-motion-page .studio-contact__note,
+.studio .studio-contact-motion-page .studio-contact__note p,
+.studio .studio-contact-motion-page .studio-contact__note dd { color: #222; }
+
+.studio-contact-motion-page .contact-form { background: transparent; }
