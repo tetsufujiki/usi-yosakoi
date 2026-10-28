@@ -68,4 +68,3 @@ export function LoopVideo({ youtubeId }: { youtubeId: string }) {
     />
   );
 }
-

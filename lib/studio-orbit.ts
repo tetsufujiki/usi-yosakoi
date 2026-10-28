@@ -15,4 +15,3 @@ export function getOrbitWorks(archive: StageArchive) {
     .sort((a, b) => b.count - a.count || a.latest.teamName.localeCompare(b.latest.teamName, "ja"))
     .map(({ latest }) => latest);
 }
-
