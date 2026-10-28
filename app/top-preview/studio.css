@@ -497,3 +497,7 @@ body:has(.studio)::before { content: none; }
 }
 
 .studio-library-title { margin: 0 0 28px; text-align: center; font-family: Arial, sans-serif; font-size: clamp(16px, 1.6vw, 21px); font-weight: 600; letter-spacing: .2em; line-height: 1.5; }
+
+.studio-process-list p { font-feature-settings: normal; font-kerning: normal; letter-spacing: .03em; line-height: 2.1; }
+
+.studio-finishing p { font-feature-settings: normal; font-kerning: normal; letter-spacing: .03em; line-height: 2.1; }
