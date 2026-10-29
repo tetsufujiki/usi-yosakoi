@@ -124,7 +124,6 @@ export function ArchiveBrowser({ archive, initialYear, initialTeam = "all", init
           onChange={(event) => { if (!composingRef.current && !(event.nativeEvent as InputEvent).isComposing) commitQuery(event.currentTarget.value); }} /></div>
       </> : null}
       <div className="archive-filter-deck">
-        <p className="archive-filter-deck__hint">左右に動かして、年度とチームを選ぶ。</p>
         <FilterRail label="年度" kind="year" options={yearOptions} value={filters.year} onChange={selectYear} />
         <FilterRail label="チーム" kind="team" options={teamOptions} value={filters.team} onChange={selectTeam} />
       </div>

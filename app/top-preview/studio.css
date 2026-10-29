@@ -501,3 +501,24 @@ body:has(.studio)::before { content: none; }
 .studio-process-list p { font-feature-settings: normal; font-kerning: normal; letter-spacing: .03em; line-height: 2.1; }
 
 .studio-finishing p { font-feature-settings: normal; font-kerning: normal; letter-spacing: .03em; line-height: 2.1; }
+
+/* Compact navigation and a clear work-title hierarchy on all screens. */
+.mark-orbit__bottomline { justify-content: flex-end; }
+.filter-row { grid-template-columns: minmax(0, 1fr); }
+.filter-row__accessible-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.studio-work__caption { gap: 7px; }
+.studio-work__year { font-size: 15px; line-height: 1.5; margin-bottom: 0; letter-spacing: .02em; color: #555; }
+.studio-work__year > span { font-size: 18px; }
+.studio-work__team { font-size: 15px; font-weight: 500; line-height: 1.6; }
+.studio-work__title { font-size: 19px; font-weight: 600; line-height: 1.65; color: #111; overflow-wrap: anywhere; font-feature-settings: normal; letter-spacing: .02em; }
+.studio-track__year { font-size: 16px; line-height: 1.6; letter-spacing: .02em; }
+.studio-track__title { font-size: 19px; font-weight: 600; line-height: 1.7; overflow-wrap: anywhere; font-feature-settings: normal; }
+@media (max-width: 639px) {
+  .filter-row__body { padding-inline: 0; }
+  .filter-row__arrows { display: none; }
+  .studio-work__caption { gap: 6px; }
+  .studio-work__year, .studio-work__team { font-size: 14px; }
+  .studio-work__title { font-size: 17px; line-height: 1.7; }
+  .studio-track__year { font-size: 14px; }
+  .studio-track__title { font-size: 17px; }
+}

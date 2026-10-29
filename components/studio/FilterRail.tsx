@@ -149,10 +149,7 @@ export function FilterRail({ label, kind, options, value, onChange }: {
 
   return (
     <div className={`filter-row filter-row--${kind}`}>
-      <div className="filter-row__label">
-        <span id={groupId}>{label}</span>
-        <button type="button" onClick={() => select("all")} className={`filter-row__all ${kind === "team" && value !== "all" ? "is-team-clear" : ""}`}>{kind === "year" ? "全年度" : value === "all" ? "全チーム" : "解除 ×"}</button>
-      </div>
+      <span id={groupId} className="filter-row__accessible-label">{label}</span>
       <div className="filter-row__body">
         <div ref={railRef} className={`filter-rail filter-rail--${kind}`} role="radiogroup" aria-labelledby={groupId}
           onWheel={() => { interactedRef.current = true; }}

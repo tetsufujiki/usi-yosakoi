@@ -257,7 +257,6 @@ function OrbitStage({ works, background = false, activeId, open }: {
         </div>
       </div>
       {background ? <div className="mark-orbit__background-control"><button type="button" onClick={() => setPaused((current) => !current)} aria-pressed={paused} aria-label={paused ? "背景の動きを再開" : "背景の動きを止める"}><span aria-hidden="true">{paused ? "▶" : "Ⅱ"}</span> {paused ? "背景を動かす" : "背景を止める"}</button></div> : <div className="mark-orbit__bottomline">
-        <p><span className="mark-orbit__drag-hint" aria-hidden="true">↔</span> 左右に動かす。気になるマークから、聴く。</p>
         <div className="mark-orbit__controls">
           <button type="button" onClick={() => moveBy(-1)} aria-label="前のチームへ">←</button>
           <button type="button" onClick={() => { motionRef.current.velocity = 0; motionRef.current.target = null; setPaused(!paused); }} aria-pressed={paused} aria-label={paused ? "自動回転を再開" : "自動回転を停止"}>{paused ? "▶" : "Ⅱ"}</button>
