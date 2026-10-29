@@ -522,3 +522,13 @@ body:has(.studio)::before { content: none; }
   .studio-track__year { font-size: 14px; }
   .studio-track__title { font-size: 17px; }
 }
+
+/* Keep year and team together, with a separate space for the performance. */
+.studio-work__caption { gap: 2px; }
+.studio-work__title { margin-top: 9px; }
+.studio-work__title[data-multiline="true"], .studio-track__title[data-multiline="true"] { letter-spacing: -.015em; }
+@media (max-width: 639px) {
+  .studio-search-toggle { justify-content: center; }
+  .studio-work__caption { gap: 2px; }
+  .studio-work__title { margin-top: 8px; }
+}
