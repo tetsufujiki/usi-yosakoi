@@ -241,14 +241,14 @@ function OrbitStage({ works, background = false, activeId, open }: {
           <div ref={rotorRef} className="mark-orbit__rotor">
             {works.map((work, index) => (
               <div className="mark-orbit__slot" key={work.teamId} style={{ "--slot-angle": `${index * step}deg` } as CSSProperties}>
-                {background ? <div className="mark-orbit__card">{work.mark ? <TeamMark mark={work.mark} size={400} priority={index < 2 || index > works.length - 3} /> : null}</div> : <button type="button" className="mark-orbit__card" tabIndex={front === index ? 0 : -1}
+                {background ? <div className="mark-orbit__card">{work.mark ? <TeamMark mark={work.mark} size={400} loading="eager" priority={index < 2 || index > works.length - 3} /> : null}</div> : <button type="button" className="mark-orbit__card" tabIndex={front === index ? 0 : -1}
                   aria-label={getPlayLabel(work)} aria-haspopup="dialog"
                   onMouseEnter={() => { motionRef.current.hovering = true; motionRef.current.velocity = 0; }}
                   onMouseLeave={() => { motionRef.current.hovering = false; wakeRef.current(); }}
                   onFocus={() => { motionRef.current.focusing = true; motionRef.current.velocity = 0; }}
                   onBlur={() => { motionRef.current.focusing = false; wakeRef.current(); }}
                   onClick={(event) => open?.(work.id, event.currentTarget)}>
-                  {work.mark ? <TeamMark mark={work.mark} size={400} priority={index < 5} /> : null}
+                  {work.mark ? <TeamMark mark={work.mark} size={400} loading="eager" priority={index < 5} /> : null}
                   <span className="mark-orbit__card-caption"><span>{work.teamName}</span><span aria-hidden="true">▶</span></span>
                 </button>}
               </div>

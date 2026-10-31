@@ -10,6 +10,7 @@ type TeamMarkProps = {
   alt?: string;
   className?: string;
   priority?: boolean;
+  loading?: "eager" | "lazy";
 };
 
 export function TeamMark({
@@ -19,6 +20,7 @@ export function TeamMark({
   alt = "",
   className,
   priority = false,
+  loading,
 }: TeamMarkProps) {
   return (
     <Image
@@ -28,6 +30,7 @@ export function TeamMark({
       width={size}
       height={size}
       priority={priority}
+      loading={loading}
       unoptimized
       draggable={false}
     />
